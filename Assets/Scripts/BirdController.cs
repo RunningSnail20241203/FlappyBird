@@ -9,10 +9,45 @@ public class BirdController : MonoBehaviour
     private BirdTrajectoryData currentTrajectory;
     private bool jumpInputThisFrame = false;
     private int logicFrame = 0;
+    private StateMachine<BirdState> stateMachine;
 
+    public bool IsDead { get; set; }
+
+    public void ResetBird()
+    {
+        
+    }
+
+    public void PlayDeathEffect()
+    {
+        
+    }
+
+    public void EnablePhysics(bool enable)
+    {
+        
+    }
+
+    public void Jump()
+    {
+        rb.velocity = new Vector2(0, jumpVelocity);
+    }    
+    
     private void Awake()
     {
         transform.position = birdBirthPoint.position;
+        
+        stateMachine = new StateMachine<BirdState>();
+        stateMachine.AddState(new BirdDeadState(this));
+        stateMachine.AddState(new BirdFlyingState(this));
+        stateMachine.AddState(new BirdIdleState(this));
+        
+        // 添加状态过渡
+        stateMachine.AddTransition<BirdIdleState, BirdFlyingState>(() => Input.GetKeyDown(KeyCode.Space));
+        stateMachine.AddTransition<BirdDeadState, BirdIdleState>(() => Input.GetKeyDown(KeyCode.Escape));
+        stateMachine.AddTransition<BirdFlyingState, BirdDeadState>(() => IsDead);
+        stateMachine.AddTransition<BirdFlyingState, BirdIdleState>(() => Input.GetKeyDown(KeyCode.Escape));
+
     }
 
     // Start is called before the first frame update
@@ -50,8 +85,8 @@ public class BirdController : MonoBehaviour
         });
     }
 
-    private void Jump()
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        rb.velocity = new Vector2(0, jumpVelocity);
+        IsDead = true;
     }
 }
