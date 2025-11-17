@@ -23,13 +23,16 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         var pausedState = new PausedState();
         var gameOverState = new GameOverState();
         var levelCompleteState = new LevelCompleteState();
+        var waitStartState = new WaitStartState();
         
         // 添加状态
+        StateMachine.AddState(waitStartState);
         StateMachine.AddState(menuState);
         StateMachine.AddState(playingState);
         StateMachine.AddState(pausedState);
         StateMachine.AddState(gameOverState);
         StateMachine.AddState(levelCompleteState);
+        
         
         // 添加状态过渡
         StateMachine.AddTransition<MenuState, PlayingState>(() => Input.GetKeyDown(KeyCode.Space));
@@ -40,7 +43,7 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         StateMachine.AddTransition<GameOverState, MenuState>(() => Input.GetKeyDown(KeyCode.R));
         
         // 设置初始状态
-        StateMachine.ChangeState<MenuState>();
+        StateMachine.ChangeState<WaitStartState>();
         
         // 监听状态变化
         StateMachine.OnStateChanged += OnStateChanged;
@@ -106,6 +109,11 @@ public class GameStateManager : MonoSingleton<GameStateManager>
     public void GameOver()
     {
         StateMachine.ChangeState<GameOverState>();
+    }
+
+    public void AddCommand(BaseCommand command)
+    {
+        StateMachine.CurrentState.AddCommand(command);
     }
 
     protected override void OnDestroy()

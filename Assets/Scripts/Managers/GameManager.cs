@@ -1,6 +1,6 @@
 public class GameManager : MonoSingleton<GameManager>
 {
-    public static BirdController BirdController => BirdController;
+    public static BirdController BirdController ;
     public UIManager UIManager => UIManager;
     public ScoreManager ScoreManager => ScoreManager;
     public AudioManager AudioManager => AudioManager;

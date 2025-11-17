@@ -1,88 +1,76 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BirdController : MonoBehaviour
 {
     [SerializeField] private float jumpVelocity = 5f;
     [SerializeField] private Transform birdBirthPoint;
-    private Rigidbody2D rb;
-    private BirdTrajectoryData currentTrajectory;
-    private bool jumpInputThisFrame = false;
-    private int logicFrame = 0;
-    private StateMachine<BirdState> stateMachine;
+    private BoxCollider2D _boxCollider2D;
+    private Rigidbody2D _rb;
+    private BirdTrajectoryData _currentTrajectory;
+    private int _logicFrame = 0;
+    private Queue<int> _jumpQueue = new();
+    private bool _jumpAtThisFrame = false;
 
     public bool IsDead { get; set; }
+    public bool IsIdle { get; set; }
 
     public void ResetBird()
     {
-        
+        transform.position = birdBirthPoint.position;
+        IsIdle = true;
+        IsDead = false;
     }
 
-    public void PlayDeathEffect()
+    public void StartBird()
     {
-        
+        IsIdle = false;
+        IsDead = false;
     }
 
-    public void EnablePhysics(bool enable)
+    private void Jump()
     {
-        
+        _rb.velocity = new Vector2(0, jumpVelocity);
     }
 
-    public void Jump()
-    {
-        rb.velocity = new Vector2(0, jumpVelocity);
-    }    
-    
     private void Awake()
     {
-        transform.position = birdBirthPoint.position;
-        
-        stateMachine = new StateMachine<BirdState>();
-        stateMachine.AddState(new BirdDeadState(this));
-        stateMachine.AddState(new BirdFlyingState(this));
-        stateMachine.AddState(new BirdIdleState(this));
-        
-        // 添加状态过渡
-        stateMachine.AddTransition<BirdIdleState, BirdFlyingState>(() => Input.GetKeyDown(KeyCode.Space));
-        stateMachine.AddTransition<BirdDeadState, BirdIdleState>(() => Input.GetKeyDown(KeyCode.Escape));
-        stateMachine.AddTransition<BirdFlyingState, BirdDeadState>(() => IsDead);
-        stateMachine.AddTransition<BirdFlyingState, BirdIdleState>(() => Input.GetKeyDown(KeyCode.Escape));
+        _rb = GetComponent<Rigidbody2D>();
+        _boxCollider2D = GetComponent<BoxCollider2D>();
 
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-
-        currentTrajectory = new BirdTrajectoryData
-        {
-            trajectoryId = DateTime.UtcNow.Ticks
-        };
+        // _currentTrajectory = new BirdTrajectoryData
+        // {
+        //     trajectoryId = DateTime.UtcNow.Ticks
+        // };
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            jumpInputThisFrame = true;
-        }
+        if (IsIdle) return;
+        if (IsDead) return;
+        if (!Input.GetKeyDown(KeyCode.Space)) return;
+        _jumpAtThisFrame = true;
+        // _currentTrajectory.inputEvents.Add(new InputEvent
+        // {
+        //     timeSinceStart = _logicFrame
+        // });
+        // _jumpQueue.Enqueue(_logicFrame);
+        // Debug.Log($"Jump at logicFrame:{_logicFrame}");
     }
 
     private void FixedUpdate()
     {
-        logicFrame += 1;
-        if (!jumpInputThisFrame) return;
-        jumpInputThisFrame = false;
-
-        Jump();
-        Debug.Log($"Jump at logicFrame:{logicFrame}");
-
-        currentTrajectory.inputEvents.Add(new InputEvent
+        // 目前先设计成，只接受最近的一次输入
+        if (_jumpAtThisFrame)
         {
-            timeSinceStart = logicFrame
-        });
+            _jumpAtThisFrame = false;
+            Jump();
+            Debug.Log($"Jump at logicFrame:{_logicFrame}");
+        }
+
+        _logicFrame += 1;
     }
 
     private void OnCollisionEnter2D(Collision2D other)

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using DefaultNamespace;
 using UnityEngine;
 
 public class PipeSpawner : MonoSingleton<PipeSpawner>
@@ -13,13 +12,17 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
     private const string PipePoolName = "PipePool";
     private float _timer;
     private readonly List<GameObject> _pipes = new();
+    private bool _isSpawning;
 
     public void StartSpawning()
     {
+        _isSpawning = true;
+        _timer = 0f;
     }
 
     public void StopSpawning()
     {
+        _isSpawning = false;
     }
 
     private void Start()
@@ -37,14 +40,16 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
         GameObjectPool.Instance.CreatePool(pipePoolConfig);
     }
 
-    // private void Update()
-    // {
-    //     _timer += Time.deltaTime;
-    //
-    //     if (_timer < spawnInterval) return;
-    //     SpawnOnePairPipe();
-    //     _timer = 0f;
-    // }
+    private void Update()
+    {
+        if (!_isSpawning) return;
+        
+        _timer += Time.deltaTime;
+    
+        if (_timer < spawnInterval) return;
+        SpawnOnePairPipe();
+        _timer = 0f;
+    }
 
     private void SpawnOnePairPipe()
     {
