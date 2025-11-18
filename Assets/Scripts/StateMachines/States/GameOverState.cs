@@ -10,14 +10,14 @@ public class GameOverState : GameState
     public override void OnEnter()
     {
         Debug.Log("进入游戏结束状态");
-        GameManager.UIManager.ShowGameOverPanel();
-        GameManager.AudioManager.PlaySound("GameOver");
+        UIManager.Instance.ShowGameOverPanel();
+        AudioManager.Instance.PlaySound("GameOver");
         
         // 上传分数到排行榜
-        GameManager.OnlineManager.UploadScore(GameManager.ScoreManager.CurrentScore);
+        OnlineManager.Instance.UploadScore(ScoreManager.Instance.CurrentScore);
         
         // 显示最终分数
-        GameManager.UIManager.UpdateFinalScore(GameManager.ScoreManager.CurrentScore);
+        UIManager.Instance.UpdateFinalScore(ScoreManager.Instance.CurrentScore);
     }
 
     public override void OnUpdate(float deltaTime)
@@ -28,6 +28,6 @@ public class GameOverState : GameState
     public override void OnExit()
     {
         Debug.Log("退出游戏结束状态");
-        GameManager.UIManager.HideGameOverPanel();
+        UIManager.Instance.HideGameOverPanel();
     }
 }

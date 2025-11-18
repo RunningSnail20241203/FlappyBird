@@ -1,7 +1,4 @@
-namespace Commands
+public class StartGameCommand : BaseCommand
 {
-    public class StartGameCommand : BaseCommand
-    {
-        public override string Name => nameof(StartGameCommand);
-    }
+    public override string Name => nameof(StartGameCommand);
 }

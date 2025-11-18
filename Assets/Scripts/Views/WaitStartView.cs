@@ -14,14 +14,13 @@ public class WaitStartView : BaseView
     public override void Show()
     {
         base.Show();
-        gameObject.SetActive(true);
         countDownText.gameObject.SetActive(false);
         button.gameObject.SetActive(true);
     }
 
     public override void Hide()
     {
-        gameObject.SetActive(false);
+        base.Hide();
     }
 
     public void ShowCountDown(float seconds)

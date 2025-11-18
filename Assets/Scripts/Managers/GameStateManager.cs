@@ -38,13 +38,10 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         StateMachine.AddTransition<MenuState, PlayingState>(() => Input.GetKeyDown(KeyCode.Space));
         StateMachine.AddTransition<PlayingState, PausedState>(() => Input.GetKeyDown(KeyCode.Escape));
         StateMachine.AddTransition<PausedState, PlayingState>(() => Input.GetKeyDown(KeyCode.Escape));
-        StateMachine.AddTransition<PlayingState, GameOverState>(() => GameManager.BirdController.IsDead);
+        // StateMachine.AddTransition<PlayingState, GameOverState>(() => BirdController.IsDead);
         StateMachine.AddTransition<PlayingState, LevelCompleteState>(CheckLevelComplete);
         StateMachine.AddTransition<GameOverState, MenuState>(() => Input.GetKeyDown(KeyCode.R));
-        
-        // 设置初始状态
-        StateMachine.ChangeState<WaitStartState>();
-        
+ 
         // 监听状态变化
         StateMachine.OnStateChanged += OnStateChanged;
     }

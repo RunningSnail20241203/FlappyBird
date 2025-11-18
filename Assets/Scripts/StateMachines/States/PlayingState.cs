@@ -10,31 +10,31 @@ public class PlayingState : GameState
     public override void OnEnter()
     {
         Debug.Log("进入游戏状态");
-        GameManager.UIManager.ShowGamePanel();
-        GameManager.AudioManager.PlayBackgroundMusic("GameMusic");
+        UIManager.Instance.ShowGamePanel();
+        AudioManager.Instance.PlayBackgroundMusic("GameMusic");
         
         // 开始生成管道
-        GameManager.PipeSpawner.StartSpawning();
+        PipeSpawner.Instance.StartSpawning();
         
-        GameManager.BirdController.StartBird();
+        // BirdController.Instance.StartBird();
     }
 
     public override void OnUpdate(float deltaTime)
     {
         // 游戏逻辑更新
-        GameManager.ScoreManager.OnUpdate(deltaTime);
-        
-        // 检查游戏结束条件
-        if (GameManager.BirdController.IsDead)
-        {
-            GameManager.StateMachine.ChangeState<GameOverState>();
-        }
+        ScoreManager.Instance.OnUpdate(deltaTime);
+        //
+        // // 检查游戏结束条件
+        // if (BirdController.Instance.IsDead)
+        // {
+        //     StateMachine.Instance.ChangeState<GameOverState>();
+        // }
     }
 
     public override void OnExit()
     {
         Debug.Log("退出游戏状态");
-        GameManager.PipeSpawner.StopSpawning();
-        GameManager.UIManager.HideGamePanel();
+        PipeSpawner.Instance.StopSpawning();
+        UIManager.Instance.HideGamePanel();
     }
 }

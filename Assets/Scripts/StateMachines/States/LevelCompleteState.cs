@@ -10,11 +10,11 @@ public class LevelCompleteState : GameState
     public override void OnEnter()
     {
         Debug.Log("进入关卡完成状态");
-        GameManager.UIManager.ShowLevelCompletePanel();
-        GameManager.AudioManager.PlaySound("LevelComplete");
+        UIManager.Instance.ShowLevelCompletePanel();
+        AudioManager.Instance.PlaySound("LevelComplete");
         
         // 发放奖励
-        GameManager.CurrencyManager.AddCoins(CalculateReward());
+        CurrencyManager.Instance.AddCoins(CalculateReward());
     }
 
     public override void OnUpdate(float deltaTime)
@@ -25,12 +25,12 @@ public class LevelCompleteState : GameState
     public override void OnExit()
     {
         Debug.Log("退出关卡完成状态");
-        GameManager.UIManager.HideLevelCompletePanel();
+        UIManager.Instance.HideLevelCompletePanel();
     }
 
     private int CalculateReward()
     {
         // 根据表现计算奖励
-        return GameManager.ScoreManager.CurrentScore * 10;
+        return ScoreManager.Instance.CurrentScore * 10;
     }
 }

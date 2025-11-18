@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Commands;
 
 public class WaitStartState : GameState
 {
     public override string Name => "WaitStartState";
-    
+
     private const float WaitTime = 2f;
     private float _changeStateTimer;
     private bool _readyToChangeState;
@@ -20,14 +19,14 @@ public class WaitStartState : GameState
         base.OnEnter();
 
         // 重置小鸟位置
-        GameManager.BirdController.ResetBird();
-        GameManager.UIManager.ShowWaitStartPanel();
+        // BirdController.Instance.ResetBird();
+        UIManager.Instance.ShowWaitStartPanel();
     }
 
     public override void OnExit()
     {
         base.OnExit();
-        GameManager.UIManager.HideWaitStartPanel();
+        UIManager.Instance.HideWaitStartPanel();
     }
 
     public override void OnUpdate(float deltaTime)
@@ -40,7 +39,7 @@ public class WaitStartState : GameState
             if (_changeStateTimer < 0)
             {
                 _readyToChangeState = false;
-                GameManager.StateMachine.ChangeState<PlayingState>();
+                GameStateManager.Instance.StateMachine.ChangeState<PlayingState>();
             }
         }
     }

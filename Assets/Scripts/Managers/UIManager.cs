@@ -1,10 +1,16 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class UIManager : MonoSingleton<UIManager>
 {
-    private WaitStartView _waitStartView;
+    private WaitStartView _waitStartView;/**/
+    private Dictionary<UIEventType, Action> _uiEventHandlers;
 
     protected override void Initialize()
     {
         base.Initialize();
+        InitUIEventHandlers();
     }
 
     public void ShowMenuPanel()
@@ -67,5 +73,30 @@ public class UIManager : MonoSingleton<UIManager>
         {
             _waitStartView.ShowCountDown(seconds);
         }
+    }
+
+    public void ProcessUIEvent(UIEvent uiEvent)
+    {
+        if (_uiEventHandlers.TryGetValue(uiEvent.UIEventType, out var handler))
+        {
+            handler();
+        }
+        else
+        {
+            Debug.LogError($"[UIManager] 未处理的UI事件类型: {uiEvent.UIEventType}");
+        }
+    }
+
+    private void InitUIEventHandlers()
+    {
+        _uiEventHandlers = new Dictionary<UIEventType, Action>()
+        {
+            {UIEventType.StartGame, ProcessUIEvent_StartGame}
+        };
+    }
+
+    private void ProcessUIEvent_StartGame()
+    {
+        GameStateManager.Instance.AddCommand(new StartGameCommand());
     }
 }

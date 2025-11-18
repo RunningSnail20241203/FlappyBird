@@ -11,7 +11,7 @@ public class PausedState : GameState
     {
         Debug.Log("进入暂停状态");
         Time.timeScale = 0f;
-        GameManager.UIManager.ShowPausePanel();
+        UIManager.Instance.ShowPausePanel();
     }
 
     public override void OnUpdate(float deltaTime)
@@ -23,6 +23,6 @@ public class PausedState : GameState
     {
         Debug.Log("退出暂停状态");
         Time.timeScale = 1f;
-        GameManager.UIManager.HidePausePanel();
+        UIManager.Instance.HidePausePanel();
     }
 }
