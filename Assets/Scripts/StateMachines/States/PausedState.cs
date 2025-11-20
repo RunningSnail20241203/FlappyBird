@@ -23,6 +23,5 @@ public class PausedState : GameState
     {
         Debug.Log("退出暂停状态");
         Time.timeScale = 1f;
-        UIManager.Instance.HidePausePanel();
     }
 }

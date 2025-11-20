@@ -5,9 +5,9 @@ using UnityEngine;
 /// </summary>
 public class PoolManager : MonoSingleton<PoolManager>
 {
-    protected override void Initialize()
+    protected override void OnAwake()
     {
-        base.Initialize();
+        base.OnAwake();
         PreloadPools();
         Debug.Log("PoolManager 初始化完成");
     }

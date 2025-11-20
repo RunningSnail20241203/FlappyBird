@@ -7,7 +7,7 @@ public class GameStateManager : MonoSingleton<GameStateManager>
 {
     public StateMachine<GameState> StateMachine { get; set; }
     
-    protected override void Initialize()
+    protected override void OnAwake()
     {
         InitializeStateMachine();
         Debug.Log("GameStateManager 初始化完成");
@@ -22,25 +22,19 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         var playingState = new PlayingState();
         var pausedState = new PausedState();
         var gameOverState = new GameOverState();
-        var levelCompleteState = new LevelCompleteState();
-        var waitStartState = new WaitStartState();
+        var settingState = new SettingState();
         
         // 添加状态
-        StateMachine.AddState(waitStartState);
         StateMachine.AddState(menuState);
         StateMachine.AddState(playingState);
         StateMachine.AddState(pausedState);
         StateMachine.AddState(gameOverState);
-        StateMachine.AddState(levelCompleteState);
+        StateMachine.AddState(settingState);
         
         
         // 添加状态过渡
-        StateMachine.AddTransition<MenuState, PlayingState>(() => Input.GetKeyDown(KeyCode.Space));
         StateMachine.AddTransition<PlayingState, PausedState>(() => Input.GetKeyDown(KeyCode.Escape));
         StateMachine.AddTransition<PausedState, PlayingState>(() => Input.GetKeyDown(KeyCode.Escape));
-        // StateMachine.AddTransition<PlayingState, GameOverState>(() => BirdController.IsDead);
-        StateMachine.AddTransition<PlayingState, LevelCompleteState>(CheckLevelComplete);
-        StateMachine.AddTransition<GameOverState, MenuState>(() => Input.GetKeyDown(KeyCode.R));
  
         // 监听状态变化
         StateMachine.OnStateChanged += OnStateChanged;

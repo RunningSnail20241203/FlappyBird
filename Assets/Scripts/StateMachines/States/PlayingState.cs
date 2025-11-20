@@ -35,6 +35,5 @@ public class PlayingState : GameState
     {
         Debug.Log("退出游戏状态");
         PipeSpawner.Instance.StopSpawning();
-        UIManager.Instance.HideGamePanel();
     }
 }

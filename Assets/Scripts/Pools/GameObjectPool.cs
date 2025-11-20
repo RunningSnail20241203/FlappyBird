@@ -21,9 +21,9 @@ public class GameObjectPool : MonoSingleton<GameObjectPool>
     private readonly Dictionary<string, ObjectPool<GameObject>> _pools = new();
     private readonly Dictionary<GameObject, string> _objectToPoolMap = new();
 
-    protected override void Initialize()
+    protected override void OnAwake()
     {
-        base.Initialize();
+        base.OnAwake();
         InitializePools();
     }
 

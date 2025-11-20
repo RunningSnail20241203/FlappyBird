@@ -1,102 +1,256 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class UIManager : MonoSingleton<UIManager>
 {
-    private WaitStartView _waitStartView;/**/
-    private Dictionary<UIEventType, Action> _uiEventHandlers;
-
-    protected override void Initialize()
-    {
-        base.Initialize();
-        InitUIEventHandlers();
-    }
+    private Transform _uiRoot; // UI父节点
+    private readonly Dictionary<string, UIBase> _loadedUIs = new();// 已加载的UI字典
+    private readonly Dictionary<string, AsyncOperationHandle<GameObject>> _uiHandles = new(); // Addressable资源句柄字典
+    private UIBase _currentUI;  // 当前正在显示的UI
 
     public void ShowMenuPanel()
     {
-    }
-
-    public void HideMenuPanel()
-    {
+        ShowUI(UIScreen.MainMenu);
     }
 
     public void ShowGamePanel()
     {
-    }
-
-    public void HideGamePanel()
-    {
+        ShowUI(UIScreen.Game);
     }
 
     public void ShowPausePanel()
     {
-    }
-
-    public void HidePausePanel()
-    {
+        ShowUI(UIScreen.Pause);
     }
 
     public void ShowGameOverPanel()
     {
+        ShowUI(UIScreen.GameOver);
     }
 
-    public void HideGameOverPanel()
+    public void ShowSettingPanel()
     {
+        ShowUI(UIScreen.Settings);
     }
 
-    public void UpdateFinalScore(int score)
-    {
-    }
 
-    public void ShowLevelCompletePanel()
+    // 显示UI
+    public void ShowUI(string uiName, Action<UIBase> onComplete = null)
     {
-    }
-
-    public void HideLevelCompletePanel()
-    {
-    }
-
-    public void ShowWaitStartPanel()
-    {
-        _waitStartView.Show();
-    }
-
-    public void HideWaitStartPanel()
-    {
-        _waitStartView.Hide();
-    }
-
-    public void ShowCountDown(float seconds)
-    {
-        if (_waitStartView.IsShowing)
+        if (!_loadedUIs.ContainsKey(uiName))
         {
-            _waitStartView.ShowCountDown(seconds);
-        }
-    }
-
-    public void ProcessUIEvent(UIEvent uiEvent)
-    {
-        if (_uiEventHandlers.TryGetValue(uiEvent.UIEventType, out var handler))
-        {
-            handler();
+            LoadUI(uiName, OnLoaded);
         }
         else
         {
-            Debug.LogError($"[UIManager] 未处理的UI事件类型: {uiEvent.UIEventType}");
+            OnLoaded(true);
+        }
+
+        return;
+
+        void OnLoaded(bool success)
+        {
+            if (!success)
+            {
+                Debug.LogError($"加载UI失败: {uiName}");
+                onComplete?.Invoke(null);
+                return;
+            }
+
+            // 隐藏当前UI
+            if (_currentUI != null)
+            {
+                _currentUI.Hide(ShowCurrentUI);
+            }
+            else
+            {
+                ShowCurrentUI();
+            }
+
+            return;
+
+            void ShowCurrentUI()
+            {
+                // 显示新UI
+                _currentUI = _loadedUIs[uiName];
+                _currentUI.Show(() => { onComplete?.Invoke(_currentUI); });
+            }
         }
     }
 
-    private void InitUIEventHandlers()
+    // 隐藏当前UI
+    public void HideCurrentUI(Action onComplete = null)
     {
-        _uiEventHandlers = new Dictionary<UIEventType, Action>()
+        if (_currentUI != null)
         {
-            {UIEventType.StartGame, ProcessUIEvent_StartGame}
-        };
+            _currentUI.Hide(() =>
+            {
+                _currentUI = null;
+                onComplete?.Invoke();
+            });
+        }
+        else
+        {
+            onComplete?.Invoke();
+        }
     }
 
-    private void ProcessUIEvent_StartGame()
+    // 预加载多个UI
+    public void PreloadUIs(string[] uiNames, Action<int> onProgress = null, Action onComplete = null)
     {
-        GameStateManager.Instance.AddCommand(new StartGameCommand());
+        StartCoroutine(PreloadUIsRoutine(uiNames, onProgress, onComplete));
+    }
+
+    private IEnumerator PreloadUIsRoutine(string[] uiNames, Action<int> onProgress, Action onComplete)
+    {
+        var loadedCount = 0;
+
+        foreach (var uiName in uiNames)
+        {
+            if (_loadedUIs.ContainsKey(uiName))
+            {
+                loadedCount++;
+                onProgress?.Invoke(loadedCount * 100 / uiNames.Length);
+                continue;
+            }
+
+            var loadCompleted = false;
+            var loadSuccess = false;
+
+            LoadUI(uiName, (success) =>
+            {
+                loadCompleted = true;
+                loadSuccess = success;
+            });
+
+            // 等待这个UI加载完成
+            yield return new WaitUntil(() => loadCompleted);
+
+            if (!loadSuccess) continue;
+
+            loadedCount++;
+            onProgress?.Invoke(loadedCount * 100 / uiNames.Length);
+        }
+
+        onComplete?.Invoke();
+    }
+
+    // 获取UI实例
+    public T GetUI<T>(string uiName) where T : UIBase
+    {
+        if (_loadedUIs.TryGetValue(uiName, out var i))
+        {
+            return i as T;
+        }
+
+        return null;
+    }
+
+    // 卸载UI
+    private void UnloadUI(string uiName, Action onComplete = null)
+    {
+        if (_loadedUIs.ContainsKey(uiName))
+        {
+            if (_currentUI == _loadedUIs[uiName])
+            {
+                _currentUI = null;
+            }
+
+            // 销毁GameObject
+            _loadedUIs[uiName].Destroy();
+            _loadedUIs.Remove(uiName);
+
+            // 释放Addressable资源
+            if (_uiHandles.ContainsKey(uiName))
+            {
+                Addressables.Release(_uiHandles[uiName]);
+                _uiHandles.Remove(uiName);
+            }
+        }
+
+        onComplete?.Invoke();
+    }
+
+    // 同步接口：加载UI（立即返回，内部异步加载）
+    private void LoadUI(string uiName, Action<bool> onComplete = null)
+    {
+        if (_loadedUIs.ContainsKey(uiName))
+        {
+            Debug.LogWarning($"UI {uiName} 已经加载");
+            onComplete?.Invoke(true);
+            return;
+        }
+
+        if (_uiHandles.ContainsKey(uiName))
+        {
+            Debug.LogWarning($"UI {uiName} 正在加载中");
+            return;
+        }
+
+        // 开始异步加载，但提供同步接口
+        StartCoroutine(LoadUIRoutine(uiName, onComplete));
+    }
+
+    // 内部协程处理异步加载
+    private IEnumerator LoadUIRoutine(string uiName, Action<bool> onComplete)
+    {
+        // 异步加载Addressable资源
+        var handle = Addressables.LoadAssetAsync<GameObject>(uiName);
+        _uiHandles[uiName] = handle;
+
+        // 等待加载完成
+        yield return handle;
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            var instance = Instantiate(handle.Result, _uiRoot);
+            Addressables.Release(handle);
+            _uiHandles.Remove(uiName);
+
+            var uiComponent = instance.GetComponent<UIBase>();
+
+            if (uiComponent != null)
+            {
+                uiComponent.Initialize();
+                uiComponent.Hide(); // 默认隐藏
+                _loadedUIs[uiName] = uiComponent;
+                onComplete?.Invoke(true);
+            }
+            else
+            {
+                Debug.LogError($"UI {uiName} 没有UIBase组件");
+                onComplete?.Invoke(false);
+            }
+        }
+        else
+        {
+            Debug.LogError($"加载UI失败: {uiName}");
+            Addressables.Release(handle);
+            _uiHandles.Remove(uiName);
+            onComplete?.Invoke(false);
+        }
+    }
+
+    private bool IsValid()
+    {
+        return _uiRoot != null;
+    }
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+
+        var obj = GameObject.FindGameObjectWithTag("DefaultCanvas");
+        if (obj == null)
+        {
+            Debug.LogError("找不到 DefaultCanvas 游戏对象");
+            return;
+        }
+
+        _uiRoot = obj.transform;
     }
 }

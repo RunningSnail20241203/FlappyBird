@@ -25,6 +25,5 @@ public class MenuState : GameState
     public override void OnExit()
     {
         Debug.Log("退出菜单状态");
-        UIManager.Instance.HideMenuPanel();
     }
 }
