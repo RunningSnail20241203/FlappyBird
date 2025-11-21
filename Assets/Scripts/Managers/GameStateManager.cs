@@ -102,7 +102,7 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         StateMachine.ChangeState<GameOverState>();
     }
 
-    public void AddCommand(BaseCommand command)
+    public void AddCommand(CommandBase command)
     {
         StateMachine.CurrentState.AddCommand(command);
     }

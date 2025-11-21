@@ -6,14 +6,14 @@ public class MainMenuUI : UIBase
     [SerializeField] private Button startButton;
     [SerializeField] private Button optionButton;
     [SerializeField] private Button quitButton;
-    
-    private MenuViewModel _menuViewModel;
 
+    private MenuViewModel _menuViewModel;
+    
     public override void Initialize()
     {
         base.Initialize();
         uiName = "MainMenu";
-        
+
         startButton.onClick.AddListener(OnClickStartButton);
         optionButton.onClick.AddListener(OnClickOptionButton);
         quitButton.onClick.AddListener(OnClickQuitButton);
@@ -26,11 +26,11 @@ public class MainMenuUI : UIBase
 
     private void OnClickOptionButton()
     {
-        UIManager.Instance.ShowUI(UIScreen.Settings);
+        UIManager.Instance.ShowSettingPanel();
     }
 
     private void OnClickStartButton()
     {
-        UIManager.Instance.ShowUI(UIScreen.Game);
+        _menuViewModel.StartGame();
     }
 }

@@ -8,12 +8,12 @@ using UnityEngine;
 public abstract class GameState : BaseState
 {
     public abstract override string Name { get; }
-    protected List<BaseCommand> commands;
+    protected List<CommandBase> commands;
     protected virtual Dictionary<string, Action<BaseCommandArgs>> commandHandlers { get; }
 
     protected static GameManager GameManager => GameManager.Instance;
 
-    public void AddCommand(BaseCommand command)
+    public void AddCommand(CommandBase command)
     {
         commands.Add(command);
     }
@@ -27,7 +27,7 @@ public abstract class GameState : BaseState
     {
         if (commands.Count <= 0) return;
 
-        var copyCommands = new List<BaseCommand>(commands);
+        var copyCommands = new List<CommandBase>(commands);
         commands.Clear();
         foreach (var command in copyCommands)
         {

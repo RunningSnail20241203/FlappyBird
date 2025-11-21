@@ -6,19 +6,25 @@ public class ConfirmDialogManager : MonoSingleton<ConfirmDialogManager>
 {
     private Transform _container;
     private int _dialogId = 0;
-    // private Dictionary<int, >
+    private Dictionary<int, UIBase> _dialogs = new();
     
-    public int ShowConfirmDialog(string title, string message, Action onConfirm)
+    public int ShowConfirmDialog(LoadConfirmDialogConfig config)
     {
         if (!IsValid()) return -1;
         _dialogId += 1;
-        return _dialogId;
-    }
-
-    public int ShowConfirmDialog(string title, string message, Action onConfirm, Action onCancel)
-    {
-        if (!IsValid()) return -1;
-        _dialogId += 1;
+        
+        var tempDialogId = _dialogId;
+        UIManager.Instance.ShowUI(new LoadUIConfig<ConfirmDialogUI>
+        {
+            UIName = UIScreen.ConfirmDialog,
+            Parent = _container,
+            OnComplete = ui =>
+            {
+                _dialogs.Add(tempDialogId, ui);
+                ui.Show();
+            }
+        });
+        
         return _dialogId;
     }
 

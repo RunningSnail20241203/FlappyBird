@@ -9,15 +9,11 @@ public class UIBase : MonoBehaviour
 
     public string UIName => uiName;
     public bool IsVisible => isVisible;
-    
-    private event Action onDestroyAction;
 
     public virtual void Initialize() { }
     
-    public virtual void Show(Action onComplete = null, Action onDestroy = null)
+    public virtual void Show(Action onComplete = null)
     {
-        onDestroyAction -= onComplete;
-        onDestroyAction += onComplete;
         if (isVisible) 
         {
             onComplete?.Invoke();
@@ -49,7 +45,6 @@ public class UIBase : MonoBehaviour
     
     public virtual void Destroy()
     {
-        onDestroyAction?.Invoke();
         OnDestroy();
         if (gameObject != null)
             Destroy(gameObject);

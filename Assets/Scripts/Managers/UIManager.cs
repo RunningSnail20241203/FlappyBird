@@ -8,42 +8,76 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public class UIManager : MonoSingleton<UIManager>
 {
     private Transform _uiRoot; // UI父节点
-    private readonly Dictionary<string, UIBase> _loadedUIs = new();// 已加载的UI字典
+    private readonly Dictionary<string, UIBase> _loadedUIs = new(); // 已加载的UI字典
     private readonly Dictionary<string, AsyncOperationHandle<GameObject>> _uiHandles = new(); // Addressable资源句柄字典
-    private UIBase _currentUI;  // 当前正在显示的UI
+    private UIBase _currentUI; // 当前正在显示的UI
 
     public void ShowMenuPanel()
     {
-        ShowUI(UIScreen.MainMenu);
+        ShowUI(new LoadUIConfig { UIName = UIScreen.MainMenu });
+    }
+
+    public void HideMenuPanel()
+    {
+        HideUI(UIScreen.MainMenu);
     }
 
     public void ShowGamePanel()
     {
-        ShowUI(UIScreen.Game);
+        ShowUI(new LoadUIConfig { UIName = UIScreen.Game });
+    }
+
+    public void HideGamePanel()
+    {
+        HideUI(UIScreen.Game);
     }
 
     public void ShowPausePanel()
     {
-        ShowUI(UIScreen.Pause);
+        ShowUI(new LoadUIConfig { UIName = UIScreen.Pause });
+    }
+
+    public void HidePausePanel()
+    {
+        HideUI(UIScreen.Pause);
     }
 
     public void ShowGameOverPanel()
     {
-        ShowUI(UIScreen.GameOver);
+        ShowUI(new LoadUIConfig { UIName = UIScreen.GameOver });
+    }
+
+    public void HideGameOverPanel()
+    {
+        HideUI(UIScreen.GameOver);
     }
 
     public void ShowSettingPanel()
     {
-        ShowUI(UIScreen.Settings);
+        ShowUI(new LoadUIConfig { UIName = UIScreen.Settings });
     }
 
-
-    // 显示UI
-    public void ShowUI(string uiName, Action<UIBase> onComplete = null)
+    public void HideSettingPanel()
     {
+        HideUI(UIScreen.Settings);
+    }
+    
+    
+    public void ShowUI<T>(LoadUIConfig<T> config) where T : UIBase
+    {
+        if (!IsValid())
+        {
+            Debug.LogError("UI系统未初始化");
+            return;
+        }
+
+        var uiName = config.UIName;
+        var onComplete = config.OnComplete;
+        if (config.Parent == null) config.Parent = _uiRoot;
+
         if (!_loadedUIs.ContainsKey(uiName))
         {
-            LoadUI(uiName, OnLoaded);
+            LoadUI(config, OnLoaded);
         }
         else
         {
@@ -61,67 +95,85 @@ public class UIManager : MonoSingleton<UIManager>
                 return;
             }
 
-            // 隐藏当前UI
-            if (_currentUI != null)
-            {
-                _currentUI.Hide(ShowCurrentUI);
-            }
-            else
-            {
-                ShowCurrentUI();
-            }
-
-            return;
-
-            void ShowCurrentUI()
-            {
-                // 显示新UI
-                _currentUI = _loadedUIs[uiName];
-                _currentUI.Show(() => { onComplete?.Invoke(_currentUI); });
-            }
+            var ui = _loadedUIs[uiName];
+            ui.Show(() => { onComplete?.Invoke(ui as T); });
         }
     }
+    
 
-    // 隐藏当前UI
-    public void HideCurrentUI(Action onComplete = null)
+    // 显示UI
+    public void ShowUI(LoadUIConfig config)
     {
-        if (_currentUI != null)
+        if (!IsValid())
         {
-            _currentUI.Hide(() =>
-            {
-                _currentUI = null;
-                onComplete?.Invoke();
-            });
+            Debug.LogError("UI系统未初始化");
+            return;
+        }
+
+        var uiName = config.UIName;
+        var onComplete = config.OnComplete;
+        if (config.Parent == null) config.Parent = _uiRoot;
+
+        if (!_loadedUIs.ContainsKey(uiName))
+        {
+            LoadUI(config, OnLoaded);
         }
         else
         {
-            onComplete?.Invoke();
+            OnLoaded(true);
+        }
+
+        return;
+
+        void OnLoaded(bool success)
+        {
+            if (!success)
+            {
+                Debug.LogError($"加载UI失败: {uiName}");
+                onComplete?.Invoke(null);
+                return;
+            }
+
+            var ui = _loadedUIs[uiName];
+            ui.Show(() => { onComplete?.Invoke(ui); });
         }
     }
 
-    // 预加载多个UI
-    public void PreloadUIs(string[] uiNames, Action<int> onProgress = null, Action onComplete = null)
+    // 隐藏指定UI
+    public void HideUI(string uiName)
     {
-        StartCoroutine(PreloadUIsRoutine(uiNames, onProgress, onComplete));
+        if (!_loadedUIs.TryGetValue(uiName, out var ui))
+        {
+            Debug.LogError($"UI:{uiName}未加载");
+            return;
+        }
+
+        ui.Hide();
     }
 
-    private IEnumerator PreloadUIsRoutine(string[] uiNames, Action<int> onProgress, Action onComplete)
+    // 预加载多个UI
+    public void PreloadUIs(LoadUIConfig[] configs, Action<int> onProgress = null, Action onComplete = null)
+    {
+        StartCoroutine(PreloadUIsRoutine(configs, onProgress, onComplete));
+    }
+
+    private IEnumerator PreloadUIsRoutine(LoadUIConfig[] configs, Action<int> onProgress, Action onComplete)
     {
         var loadedCount = 0;
 
-        foreach (var uiName in uiNames)
+        foreach (var config in configs)
         {
-            if (_loadedUIs.ContainsKey(uiName))
+            if (_loadedUIs.ContainsKey(config.UIName))
             {
                 loadedCount++;
-                onProgress?.Invoke(loadedCount * 100 / uiNames.Length);
+                onProgress?.Invoke(loadedCount * 100 / configs.Length);
                 continue;
             }
 
             var loadCompleted = false;
             var loadSuccess = false;
 
-            LoadUI(uiName, (success) =>
+            LoadUI(config, (success) =>
             {
                 loadCompleted = true;
                 loadSuccess = success;
@@ -133,7 +185,7 @@ public class UIManager : MonoSingleton<UIManager>
             if (!loadSuccess) continue;
 
             loadedCount++;
-            onProgress?.Invoke(loadedCount * 100 / uiNames.Length);
+            onProgress?.Invoke(loadedCount * 100 / configs.Length);
         }
 
         onComplete?.Invoke();
@@ -151,33 +203,28 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 卸载UI
-    private void UnloadUI(string uiName, Action onComplete = null)
+    private void UnloadUI(string uiName)
     {
-        if (_loadedUIs.ContainsKey(uiName))
+        if (!_loadedUIs.TryGetValue(uiName, out var ui))
         {
-            if (_currentUI == _loadedUIs[uiName])
-            {
-                _currentUI = null;
-            }
-
-            // 销毁GameObject
-            _loadedUIs[uiName].Destroy();
-            _loadedUIs.Remove(uiName);
-
-            // 释放Addressable资源
-            if (_uiHandles.ContainsKey(uiName))
-            {
-                Addressables.Release(_uiHandles[uiName]);
-                _uiHandles.Remove(uiName);
-            }
+            Debug.LogError($"UI:{uiName}未加载");
+            return;
         }
 
-        onComplete?.Invoke();
-    }
+        // 销毁GameObject
+        ui.Destroy();
+        _loadedUIs.Remove(uiName);
 
-    // 同步接口：加载UI（立即返回，内部异步加载）
-    private void LoadUI(string uiName, Action<bool> onComplete = null)
+        // 释放Addressable资源
+        if (!_uiHandles.TryGetValue(uiName, out var handle)) return;
+        Addressables.Release(handle);
+        _uiHandles.Remove(uiName);
+    }
+    
+    private void LoadUI<T>(LoadUIConfig<T> config, Action<bool> onComplete = null) where T : UIBase
     {
+        var uiName = config.UIName;
+        var parent = config.Parent;
         if (_loadedUIs.ContainsKey(uiName))
         {
             Debug.LogWarning($"UI {uiName} 已经加载");
@@ -192,12 +239,36 @@ public class UIManager : MonoSingleton<UIManager>
         }
 
         // 开始异步加载，但提供同步接口
-        StartCoroutine(LoadUIRoutine(uiName, onComplete));
+        StartCoroutine(LoadUIRoutine(config, onComplete));
     }
 
-    // 内部协程处理异步加载
-    private IEnumerator LoadUIRoutine(string uiName, Action<bool> onComplete)
+    // 同步接口：加载UI（立即返回，内部异步加载）
+    private void LoadUI(LoadUIConfig config, Action<bool> onComplete = null)
     {
+        var uiName = config.UIName;
+        var parent = config.Parent;
+        if (_loadedUIs.ContainsKey(uiName))
+        {
+            Debug.LogWarning($"UI {uiName} 已经加载");
+            onComplete?.Invoke(true);
+            return;
+        }
+
+        if (_uiHandles.ContainsKey(uiName))
+        {
+            Debug.LogWarning($"UI {uiName} 正在加载中");
+            return;
+        }
+
+        // 开始异步加载，但提供同步接口
+        StartCoroutine(LoadUIRoutine(config, onComplete));
+    }
+
+    private IEnumerator LoadUIRoutine<T>(LoadUIConfig<T> config, Action<bool> onComplete = null) where T : UIBase
+    {
+        var uiName = config.UIName;
+        var parent = config.Parent;
+
         // 异步加载Addressable资源
         var handle = Addressables.LoadAssetAsync<GameObject>(uiName);
         _uiHandles[uiName] = handle;
@@ -207,7 +278,50 @@ public class UIManager : MonoSingleton<UIManager>
 
         if (handle.Status == AsyncOperationStatus.Succeeded)
         {
-            var instance = Instantiate(handle.Result, _uiRoot);
+            var instance = Instantiate(handle.Result, parent);
+            Addressables.Release(handle);
+            _uiHandles.Remove(uiName);
+
+            var uiComponent = instance.GetComponent<UIBase>();
+
+            if (uiComponent != null)
+            {
+                uiComponent.Initialize();
+                uiComponent.Hide(); // 默认隐藏
+                _loadedUIs[uiName] = uiComponent;
+                onComplete?.Invoke(true);
+            }
+            else
+            {
+                Debug.LogError($"UI {uiName} 没有UIBase组件");
+                onComplete?.Invoke(false);
+            }
+        }
+        else
+        {
+            Debug.LogError($"加载UI失败: {uiName}");
+            Addressables.Release(handle);
+            _uiHandles.Remove(uiName);
+            onComplete?.Invoke(false);
+        }
+    }
+    
+    // 内部协程处理异步加载
+    private IEnumerator LoadUIRoutine(LoadUIConfig config, Action<bool> onComplete = null)
+    {
+        var uiName = config.UIName;
+        var parent = config.Parent;
+
+        // 异步加载Addressable资源
+        var handle = Addressables.LoadAssetAsync<GameObject>(uiName);
+        _uiHandles[uiName] = handle;
+
+        // 等待加载完成
+        yield return handle;
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            var instance = Instantiate(handle.Result, parent);
             Addressables.Release(handle);
             _uiHandles.Remove(uiName);
 
