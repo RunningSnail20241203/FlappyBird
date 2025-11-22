@@ -10,7 +10,8 @@ public class UIManager : MonoSingleton<UIManager>
     private Transform _uiRoot; // UI父节点
     private readonly Dictionary<string, UIBase> _loadedUIs = new(); // 已加载的UI字典
     private readonly Dictionary<string, AsyncOperationHandle<GameObject>> _uiHandles = new(); // Addressable资源句柄字典
-    private UIBase _currentUI; // 当前正在显示的UI
+
+    private const string UICanvasName = "UICanvas";
 
     public void ShowMenuPanel()
     {
@@ -61,8 +62,8 @@ public class UIManager : MonoSingleton<UIManager>
     {
         HideUI(UIScreen.Settings);
     }
-    
-    
+
+
     public void ShowUI<T>(LoadUIConfig<T> config) where T : UIBase
     {
         if (!IsValid())
@@ -99,7 +100,7 @@ public class UIManager : MonoSingleton<UIManager>
             ui.Show(() => { onComplete?.Invoke(ui as T); });
         }
     }
-    
+
 
     // 显示UI
     public void ShowUI(LoadUIConfig config)
@@ -220,7 +221,7 @@ public class UIManager : MonoSingleton<UIManager>
         Addressables.Release(handle);
         _uiHandles.Remove(uiName);
     }
-    
+
     private void LoadUI<T>(LoadUIConfig<T> config, Action<bool> onComplete = null) where T : UIBase
     {
         var uiName = config.UIName;
@@ -270,7 +271,7 @@ public class UIManager : MonoSingleton<UIManager>
         var parent = config.Parent;
 
         // 异步加载Addressable资源
-        var handle = Addressables.LoadAssetAsync<GameObject>(uiName);
+        var handle = Addressables.LoadAssetAsync<GameObject>(GetUIPath(uiName));
         _uiHandles[uiName] = handle;
 
         // 等待加载完成
@@ -305,7 +306,7 @@ public class UIManager : MonoSingleton<UIManager>
             onComplete?.Invoke(false);
         }
     }
-    
+
     // 内部协程处理异步加载
     private IEnumerator LoadUIRoutine(LoadUIConfig config, Action<bool> onComplete = null)
     {
@@ -313,7 +314,7 @@ public class UIManager : MonoSingleton<UIManager>
         var parent = config.Parent;
 
         // 异步加载Addressable资源
-        var handle = Addressables.LoadAssetAsync<GameObject>(uiName);
+        var handle = Addressables.LoadAssetAsync<GameObject>(GetUIPath(uiName));
         _uiHandles[uiName] = handle;
 
         // 等待加载完成
@@ -358,7 +359,7 @@ public class UIManager : MonoSingleton<UIManager>
     {
         base.OnAwake();
 
-        var obj = GameObject.FindGameObjectWithTag("DefaultCanvas");
+        var obj = GameObject.FindGameObjectWithTag(UICanvasName);
         if (obj == null)
         {
             Debug.LogError("找不到 DefaultCanvas 游戏对象");
@@ -366,5 +367,10 @@ public class UIManager : MonoSingleton<UIManager>
         }
 
         _uiRoot = obj.transform;
+    }
+
+    private string GetUIPath(string viewName)
+    {
+        return $"Assets/Prefabs/UI/Views/{viewName}View.prefab";
     }
 }

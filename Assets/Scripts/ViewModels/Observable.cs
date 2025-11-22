@@ -22,12 +22,10 @@ public class Observable<T> : IObservable<T>
         get => _value;
         set
         {
-            if (!EqualityComparer<T>.Default.Equals(_value, value))
-            {
-                _value = value;
-                OnValueChanged?.Invoke(value);
-                _objectValueChanged?.Invoke(value);
-            }
+            if (EqualityComparer<T>.Default.Equals(_value, value)) return;
+            _value = value;
+            OnValueChanged?.Invoke(value);
+            _objectValueChanged?.Invoke(value);
         }
     }
     
@@ -40,7 +38,7 @@ public class Observable<T> : IObservable<T>
     
     public Type ValueType => typeof(T);
     
-    public Observable(T initialValue = default(T))
+    public Observable(T initialValue = default)
     {
         _value = initialValue;
     }

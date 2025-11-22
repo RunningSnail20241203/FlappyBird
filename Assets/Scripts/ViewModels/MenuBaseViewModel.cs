@@ -2,7 +2,7 @@
 using UnityEditor;
 #endif
 
-public class MenuViewModel : ViewModelBase
+public class MenuBaseViewModel : BaseViewModel
 {
     public void QuitGame()
     {
@@ -17,7 +17,8 @@ public class MenuViewModel : ViewModelBase
 #else
                 Application.Quit();
 #endif
-            }
+            },
+            OnCancel = () => { }
         };
         ConfirmDialogManager.Instance.ShowConfirmDialog(config);
     }

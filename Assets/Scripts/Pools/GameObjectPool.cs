@@ -150,8 +150,9 @@ public class GameObjectPool : MonoSingleton<GameObjectPool>
         }
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         foreach (var pool in _pools.Values)
         {
             pool.Clear();

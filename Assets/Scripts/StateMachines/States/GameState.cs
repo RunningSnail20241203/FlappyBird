@@ -11,7 +11,6 @@ public abstract class GameState : BaseState
     protected List<CommandBase> commands;
     protected virtual Dictionary<string, Action<BaseCommandArgs>> commandHandlers { get; }
 
-    protected static GameManager GameManager => GameManager.Instance;
 
     public void AddCommand(CommandBase command)
     {

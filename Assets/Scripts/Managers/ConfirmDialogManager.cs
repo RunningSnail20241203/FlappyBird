@@ -1,31 +1,22 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ConfirmDialogManager : MonoSingleton<ConfirmDialogManager>
 {
     private Transform _container;
-    private int _dialogId = 0;
-    private Dictionary<int, UIBase> _dialogs = new();
     
-    public int ShowConfirmDialog(LoadConfirmDialogConfig config)
+    public void ShowConfirmDialog(LoadConfirmDialogConfig config)
     {
-        if (!IsValid()) return -1;
-        _dialogId += 1;
+        if (!IsValid()) return;
         
-        var tempDialogId = _dialogId;
         UIManager.Instance.ShowUI(new LoadUIConfig<ConfirmDialogUI>
         {
             UIName = UIScreen.ConfirmDialog,
             Parent = _container,
             OnComplete = ui =>
             {
-                _dialogs.Add(tempDialogId, ui);
-                ui.Show();
+                ui.Show(config);
             }
         });
-        
-        return _dialogId;
     }
 
     public void CloseConfirmDialog(int dialogId)

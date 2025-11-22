@@ -5,7 +5,7 @@ using System;
 public interface IObservable
 {
     event Action<object> OnValueChanged;
-    object Value { get; }
+    object Value { get; set; }
     Type ValueType { get; }
 }
 

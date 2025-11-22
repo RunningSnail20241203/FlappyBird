@@ -7,7 +7,7 @@ public class MainMenuUI : UIBase
     [SerializeField] private Button optionButton;
     [SerializeField] private Button quitButton;
 
-    private MenuViewModel _menuViewModel;
+    private MenuBaseViewModel _menuBaseViewModel;
     
     public override void Initialize()
     {
@@ -17,11 +17,13 @@ public class MainMenuUI : UIBase
         startButton.onClick.AddListener(OnClickStartButton);
         optionButton.onClick.AddListener(OnClickOptionButton);
         quitButton.onClick.AddListener(OnClickQuitButton);
+        
+        _menuBaseViewModel = ViewModelContainer.Instance.GetViewModel<MenuBaseViewModel>();
     }
 
     private void OnClickQuitButton()
     {
-        _menuViewModel.QuitGame();
+        _menuBaseViewModel.QuitGame();
     }
 
     private void OnClickOptionButton()
@@ -31,6 +33,6 @@ public class MainMenuUI : UIBase
 
     private void OnClickStartButton()
     {
-        _menuViewModel.StartGame();
+        _menuBaseViewModel.StartGame();
     }
 }
