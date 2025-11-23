@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Unity GameObject 对象池
@@ -13,7 +15,9 @@ public class GameObjectPool : MonoSingleton<GameObjectPool>
         public GameObject prefab;
         public int initialSize = 10;
         public int maxSize = 50;
-        public Transform parent;
+        public Transform poolParent;
+        public Action<GameObject> OnUsed;
+        public Action<GameObject> OnRecycled;
     }
 
     [SerializeField] private List<PoolConfig> poolConfigs = new();
@@ -21,9 +25,9 @@ public class GameObjectPool : MonoSingleton<GameObjectPool>
     private readonly Dictionary<string, ObjectPool<GameObject>> _pools = new();
     private readonly Dictionary<GameObject, string> _objectToPoolMap = new();
 
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
-        base.OnAwake();
+        base.OnInitialize();
         InitializePools();
     }
 
@@ -48,8 +52,8 @@ public class GameObjectPool : MonoSingleton<GameObjectPool>
 
         var pool = new ObjectPool<GameObject>(
             createFunc: () => CreateNewObject(config),
-            onGet: OnGetObject,
-            onReturn: OnReturnObject,
+            onGet: obj=> OnGetObject(obj, config),
+            onReturn:  obj=> OnReturnObject(obj, config),
             onDestroy: Destroy,
             initialSize: config.initialSize,
             maxSize: config.maxSize
@@ -60,7 +64,7 @@ public class GameObjectPool : MonoSingleton<GameObjectPool>
 
     private GameObject CreateNewObject(PoolConfig config)
     {
-        var obj = Instantiate(config.prefab, config.parent ?? transform, true);
+        var obj = Instantiate(config.prefab, config.poolParent ?? transform, true);
         obj.SetActive(false);
 
         // 添加池对象组件以便自动归还
@@ -72,15 +76,18 @@ public class GameObjectPool : MonoSingleton<GameObjectPool>
         return obj;
     }
 
-    private void OnGetObject(GameObject obj)
+    private void OnGetObject(GameObject obj, PoolConfig config)
     {
         obj.SetActive(true);
+        obj.transform.SetParent(config.poolParent);
+        config.OnUsed?.Invoke(obj);
     }
 
-    private void OnReturnObject(GameObject obj)
+    private void OnReturnObject(GameObject obj, PoolConfig config)
     {
         obj.SetActive(false);
         obj.transform.SetParent(GetPoolParent(obj));
+        config.OnRecycled?.Invoke(obj);
     }
 
     private Transform GetPoolParent(GameObject obj)
@@ -88,7 +95,7 @@ public class GameObjectPool : MonoSingleton<GameObjectPool>
         if (!_objectToPoolMap.TryGetValue(obj, out var poolName)) return transform;
 
         var config = poolConfigs.Find(c => c.poolName == poolName);
-        return config?.parent ?? transform;
+        return config?.poolParent ?? transform;
     }
 
     /// <summary>

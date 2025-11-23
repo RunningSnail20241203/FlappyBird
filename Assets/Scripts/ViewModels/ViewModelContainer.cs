@@ -87,16 +87,16 @@ public class ViewModelContainer : MonoSingleton<ViewModelContainer>
         _referenceCounts.Remove(viewModelType);
     }
 
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
-        base.OnAwake();
+        base.OnInitialize();
 
         StartCoroutine(LoadConfig());
     }
 
     private IEnumerator LoadConfig()
     {
-        var handle = Addressables.LoadAssetAsync<ViewModelScopeConfig>(ConfigPath);
+        var handle = Addressables.LoadAssetAsync<ViewModelScope>(ConfigPath);
         yield return handle;
 
         // 检查加载是否成功

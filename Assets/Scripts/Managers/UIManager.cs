@@ -355,9 +355,9 @@ public class UIManager : MonoSingleton<UIManager>
         return _uiRoot != null;
     }
 
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
-        base.OnAwake();
+        base.OnInitialize();
 
         var obj = GameObject.FindGameObjectWithTag(UICanvasName);
         if (obj == null)

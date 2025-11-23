@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(ViewModelScopeConfig.ViewModelLifetime))]
+[CustomPropertyDrawer(typeof(ViewModelScope.ViewModelLifetime))]
 public class ViewModelLifetimeDrawer : PropertyDrawer
 {
     private Type[] scriptableObjectTypes;
@@ -16,7 +16,7 @@ public class ViewModelLifetimeDrawer : PropertyDrawer
         
         scriptableObjectTypes = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(assembly => assembly.GetTypes())
-            .Where(type => type.IsSubclassOf(typeof(BaseViewModel)) && !type.IsAbstract)
+            .Where(type => type.IsSubclassOf(typeof(ViewModelBase)) && !type.IsAbstract)
             .OrderBy(type => type.FullName)
             .ToArray();
             

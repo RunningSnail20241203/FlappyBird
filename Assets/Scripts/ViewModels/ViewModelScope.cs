@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class ViewModelScopeConfig : BaseConfig
+public class ViewModelScope : ConfigBase
 {
     [Serializable]
     public class ViewModelLifetime

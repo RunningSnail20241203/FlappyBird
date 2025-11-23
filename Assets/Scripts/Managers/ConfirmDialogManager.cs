@@ -29,9 +29,9 @@ public class ConfirmDialogManager : MonoSingleton<ConfirmDialogManager>
         return _container != null;
     }
 
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
-        base.OnAwake();
+        base.OnInitialize();
 
         var obj = GameObject.FindGameObjectWithTag("DialogCanvas");
         if (obj == null)

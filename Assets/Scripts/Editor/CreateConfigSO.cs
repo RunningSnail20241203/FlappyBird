@@ -12,7 +12,7 @@ public class CreateConfigSo : EditorWindow
     private void OnGUI()
     {
         if (GUILayout.Button("Create ViewModel Scope Config"))
-            CreateConfig<ViewModelScopeConfig>();
+            CreateConfig<ViewModelScope>();
     }
     
     private static void CreateConfig<T>() where T : ScriptableObject

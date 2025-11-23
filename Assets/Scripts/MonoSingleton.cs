@@ -9,7 +9,7 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
     private static T _instance;
     private static readonly object _lock = new object();
-    private static bool _isApplicationQuitting = false;
+    protected static bool _isApplicationQuitting = false;
     
     public static T Instance
     {
@@ -63,7 +63,7 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
             return;
         }
         
-        OnAwake();
+        OnInitialize();
     }
     
     protected virtual void OnDestroy()
@@ -82,5 +82,5 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     /// <summary>
     /// 初始化方法，在Awake中自动调用
     /// </summary>
-    protected virtual void OnAwake() { }
+    protected virtual void OnInitialize() { }
 }

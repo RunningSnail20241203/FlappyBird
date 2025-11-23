@@ -6,6 +6,9 @@ TagManager:
   tags:
   - UICanvas
   - DialogCanvas
+  - BirdController
+  - Obstacle
+  - WorldCanvas
   layers:
   - Default
   - TransparentFX

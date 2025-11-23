@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-public abstract class BaseViewModel : IViewModel
+public abstract class ViewModelBase : IViewModel
 {
     // === IViewModel 实现 ===
     public string ViewModelName => GetType().Name;

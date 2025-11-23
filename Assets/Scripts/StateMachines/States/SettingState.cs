@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SettingState : GameState
+public class SettingState : GameStateBase
 {
     public override string Name => nameof(SettingState);
     

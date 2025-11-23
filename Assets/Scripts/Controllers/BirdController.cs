@@ -1,32 +1,29 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BirdController : MonoBehaviour
+public class BirdController : MonoBehaviour, IController
 {
     [SerializeField] private float jumpVelocity = 5f;
     [SerializeField] private Transform birdBirthPoint;
-    private BoxCollider2D _boxCollider2D;
     private Rigidbody2D _rb;
     private BirdTrajectoryData _currentTrajectory;
-    private int _logicFrame = 0;
-    private Queue<int> _jumpQueue = new();
-    private bool _jumpAtThisFrame = false;
-
-    public bool IsDead { get; set; }
-    public bool IsIdle { get; set; }
+    private int _logicFrame;
+    private bool _jumpAtThisFrame;
+    private const string CollisionTag = "Obstacle";
 
     public void ResetBird()
     {
         transform.position = birdBirthPoint.position;
-        IsIdle = true;
-        IsDead = false;
+        _rb.gravityScale = 0;
     }
 
     public void StartBird()
     {
-        IsIdle = false;
-        IsDead = false;
+        _rb.gravityScale = 100;
+    }
+
+    public void PauseBird()
+    {
+        _rb.gravityScale = 0;
     }
 
     private void Jump()
@@ -37,7 +34,9 @@ public class BirdController : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _boxCollider2D = GetComponent<BoxCollider2D>();
+        GetComponent<BoxCollider2D>();
+
+        ResetBird();
 
         // _currentTrajectory = new BirdTrajectoryData
         // {
@@ -48,8 +47,6 @@ public class BirdController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (IsIdle) return;
-        if (IsDead) return;
         if (!Input.GetKeyDown(KeyCode.Space)) return;
         _jumpAtThisFrame = true;
         // _currentTrajectory.inputEvents.Add(new InputEvent
@@ -75,6 +72,9 @@ public class BirdController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        IsDead = true;
+        if (other.gameObject.CompareTag(CollisionTag))
+        {
+            GameStateManager.Instance.AddCommand(new GameOverCommand());
+        }
     }
 }

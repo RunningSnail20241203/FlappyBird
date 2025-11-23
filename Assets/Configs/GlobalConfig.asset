@@ -13,3 +13,10 @@ MonoBehaviour:
   m_Name: GlobalConfig
   m_EditorClassIdentifier: 
   pipeMoveSpeed: 200
+  spawnInterval: 2
+  spawnXPosition: 1100
+  pipeTriggerOffsetX: 100
+  upPipeYRange: {x: 350, y: 600}
+  downPipeYRange: {x: -600, y: -350}
+  pipePrefab: {fileID: 1726638839803202, guid: d39655f7b3547274cac3e9a9f28f930c, type: 3}
+  pipeTriggerPrefab: {fileID: 5169871406479726666, guid: ce80f630aa6f7384e9648513476dec49, type: 3}

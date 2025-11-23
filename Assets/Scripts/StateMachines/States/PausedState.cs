@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// 暂停状态
 /// </summary>
-public class PausedState : GameState
+public class PausedState : GameStateBase
 {
     public override string Name => "Paused";
 

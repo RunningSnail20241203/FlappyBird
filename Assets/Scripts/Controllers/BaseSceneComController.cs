@@ -1,38 +1,48 @@
 using UnityEngine;
 
-public class PipeMover : MonoBehaviour
+public class BaseSceneComController : MonoBehaviour, ISceneComController, IRecycle
 {
-    [SerializeField] private GlobalConfig globalConfig;
-    [SerializeField] private float despawnX = -10f;
-
+    private bool _isMoving;
+    private float _speed;
     private Camera _camera;
     private RectTransform _rectTransform;
-    private bool _isMoving;
 
-    public void ResetPipe()
+    public void StartMove(float moveSpeed)
     {
+        _speed = moveSpeed;
         _isMoving = true;
     }
 
-    // Start is called before the first frame update
-    private void Start()
+    public void StopMove()
+    {
+        _isMoving = false;
+    }
+
+    public void OnRecycle()
+    {
+        StopMove();
+    }
+
+    public void OnUse()
+    {
+    }
+
+    private void Awake()
     {
         _camera = Camera.main;
         _rectTransform = GetComponent<RectTransform>();
     }
 
-    // 更可靠的方法是手动检测
     private void Update()
     {
         if (!_isMoving) return;
         CheckOutScreen();
     }
 
-
     private void FixedUpdate()
     {
         if (!_isMoving) return;
-        transform.Translate(Vector2.left * (globalConfig.pipeMoveSpeed * Time.fixedDeltaTime));
+        transform.Translate(Vector2.left * (_speed * Time.fixedDeltaTime));
     }
 
     private void CheckOutScreen()
@@ -47,6 +57,6 @@ public class PipeMover : MonoBehaviour
         if (!(viewportPos.x < -0.5f)) return; // 使用-0.5是为了确保物体完全离开屏幕再加一个缓冲
 
         _isMoving = false;
-        GameObjectPool.Instance.Return(gameObject);
+        PipeSpawner.Instance.ReturnPipe(this);
     }
 }

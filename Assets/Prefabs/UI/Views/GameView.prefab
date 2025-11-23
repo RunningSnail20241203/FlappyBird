@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 7223686525979642319}
   - component: {fileID: 727711569768139056}
   - component: {fileID: 4024598728981421245}
+  - component: {fileID: 8914960928981498518}
   m_Layer: 5
   m_Name: GameView
   m_TagString: Untagged
@@ -214,6 +215,22 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8914960928981498518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420510885958051062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d022241ba60041dc8a589705c7631d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiName: 
+  isVisible: 0
+  pauseButton: {fileID: 1371307188306719372}
+  scoreText: {fileID: 6917945758015885686}
 --- !u!1 &4934267545900546758
 GameObject:
   m_ObjectHideFlags: 0

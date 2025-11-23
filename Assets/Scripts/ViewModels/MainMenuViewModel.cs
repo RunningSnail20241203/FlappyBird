@@ -2,7 +2,7 @@
 using UnityEditor;
 #endif
 
-public class MenuBaseViewModel : BaseViewModel
+public class MainMenuViewModel : ViewModelBase
 {
     public void QuitGame()
     {
@@ -25,7 +25,6 @@ public class MenuBaseViewModel : BaseViewModel
 
     public void StartGame()
     {
-        UIManager.Instance.ShowGamePanel();
-        UIManager.Instance.HideMenuPanel();
+        GameStateManager.Instance.AddCommand(new StartGameCommand());
     }
 }
