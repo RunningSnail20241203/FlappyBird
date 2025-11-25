@@ -114,6 +114,7 @@ public class GameObjectPool : MonoSingleton<GameObjectPool>
 
         obj.transform.localPosition = position;
         obj.transform.localRotation = rotation;
+        obj.transform.localScale = Vector3.one;
 
         return obj;
     }

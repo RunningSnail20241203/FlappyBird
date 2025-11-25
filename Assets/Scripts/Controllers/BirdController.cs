@@ -134,11 +134,7 @@ public class BirdController : MonoBehaviour, IController
 
     private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaycastResults)
     {
-        return eventSystemRaycastResults.Any(raycastResult =>
-        {
-            Debug.Log($"{raycastResult.gameObject.layer}|{_uiLayer}");
-            return raycastResult.gameObject.layer == _uiLayer;
-        });
+        return eventSystemRaycastResults.Any(raycastResult => raycastResult.gameObject.layer == _uiLayer);
     }
 
     private List<RaycastResult> GetEventSystemRaycastResults(Vector2 position)

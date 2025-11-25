@@ -7,8 +7,9 @@ public class GlobalConfig : ScriptableObject
     public float spawnInterval = 2f;
     public float spawnXPosition = 1100f;
     public float pipeTriggerOffsetX = 100f;
-    public Vector2 upPipeYRange = new(350f, 600f);
-    public Vector2 downPipeYRange = new(-600f, -350f);
+    public Vector2 pipeIntervalY = new(350f, 600f);
+    public Vector2 pipeCenterY = new(-150f, 150f);
+    public float centerOffset = 50f;
     public GameObject pipePrefab;
     public GameObject pipeTriggerPrefab;
 }

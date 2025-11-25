@@ -9,8 +9,8 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
     private const string PipeTriggerPoolName = "PipeTriggerPool";
     private const string GlobalConfigPath = "Assets/Configs/GlobalConfig.asset";
     private const string WorldCanvasTag = "WorldCanvas";
-    
-    
+
+
     private readonly List<BaseSceneComController> _sceneComs = new();
     private float _timer;
     private bool _isSpawning;
@@ -24,7 +24,7 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
         _timer = 0f;
         SpawnOnePairPipe();
     }
-    
+
     public void PauseSpawning()
     {
         _isSpawning = false;
@@ -88,9 +88,36 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
 
     private void SpawnOnePairPipe()
     {
-        SpawnPipe(_globalConfig.upPipeYRange, _globalConfig.spawnXPosition, _globalConfig.pipeMoveSpeed);
-        SpawnPipe(_globalConfig.downPipeYRange, _globalConfig.spawnXPosition, _globalConfig.pipeMoveSpeed);
+        SpawnPipe(_globalConfig.pipeCenterY, _globalConfig.pipeIntervalY, _globalConfig.spawnXPosition,
+            _globalConfig.pipeMoveSpeed);
         SpawnTrigger(_globalConfig.spawnXPosition + _globalConfig.pipeTriggerOffsetX, _globalConfig.pipeMoveSpeed);
+    }
+
+    private void SpawnPipe(Vector2 pipeCenterY, Vector2 pipeIntervalY, float pipeXPosition, float pipeMoveSpeed)
+    {
+        var randomY = Random.Range(pipeCenterY.x, pipeCenterY.y);
+        var randomIntervalY = Random.Range(pipeIntervalY.x, pipeIntervalY.y);
+        Debug.Log($"SpawnPipe: {randomY}, {randomIntervalY}");
+        var spawnPosition1 = new Vector3(pipeXPosition, randomY + randomIntervalY / 2, 0f);
+        var spawnPosition2 = new Vector3(pipeXPosition, randomY - randomIntervalY / 2, 0f);
+        SpawnPipe(spawnPosition1, pipeMoveSpeed, true);
+        SpawnPipe(spawnPosition2, pipeMoveSpeed, false);
+    }
+
+    private void SpawnPipe(Vector3 spawnPosition, float moveSpeed, bool isUp)
+    {
+        var pipe = GameObjectPool.Instance.Get(PipePoolName, spawnPosition, Quaternion.identity);
+        var rect = pipe.GetComponent<RectTransform>();
+        rect.pivot = new Vector2(0.5f, isUp ? 0f : 1f);
+
+        var col = pipe.GetComponent<BoxCollider2D>();
+        col.offset = new Vector2(col.offset.x, isUp ? col.size.y / 2 : -col.size.y / 2);
+
+        if (pipe == null) return;
+        var controller = pipe.GetComponent<PipeController>();
+        _sceneComs.Add(controller);
+        // 设置管道移动
+        controller.StartMove(moveSpeed);
     }
 
     private void SpawnTrigger(float spawnXPosition, float moveSpeed)
@@ -99,20 +126,6 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
         var pipe = GameObjectPool.Instance.Get(PipeTriggerPoolName, spawnPosition, Quaternion.identity);
         if (pipe == null) return;
         var controller = pipe.GetComponent<PipeTriggerController>();
-        _sceneComs.Add(controller);
-        // 设置管道移动
-        controller.StartMove(moveSpeed);
-    }
-
-    private void SpawnPipe(Vector2 yPosRange, float spawnXPosition, float moveSpeed)
-    {
-        var randomY = Random.Range(yPosRange.x, yPosRange.y);
-        var spawnPosition = new Vector3(spawnXPosition, randomY, 0f);
-
-        var pipe = GameObjectPool.Instance.Get(PipePoolName, spawnPosition, Quaternion.identity);
-
-        if (pipe == null) return;
-        var controller = pipe.GetComponent<PipeController>();
         _sceneComs.Add(controller);
         // 设置管道移动
         controller.StartMove(moveSpeed);
@@ -174,7 +187,7 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
     private void OnUsePipe(GameObject obj)
     {
         obj.transform.SetParent(_parent);
-        
+
         var controller = obj.GetComponent<BaseSceneComController>();
         controller.OnUse();
     }
