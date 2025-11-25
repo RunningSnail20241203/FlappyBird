@@ -65,6 +65,11 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
         
         OnInitialize();
     }
+
+    protected virtual void Update()
+    {
+        OnUpdate();
+    }
     
     protected virtual void OnDestroy()
     {
@@ -83,4 +88,6 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     /// 初始化方法，在Awake中自动调用
     /// </summary>
     protected virtual void OnInitialize() { }
+    
+    protected virtual void OnUpdate() { }
 }

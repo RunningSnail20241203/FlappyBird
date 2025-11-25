@@ -59,6 +59,7 @@ public class GameStateManager : MonoSingleton<GameStateManager>
 
     protected override void OnInitialize()
     {
+        base.OnInitialize();
         InitializeStateMachine();
         Debug.Log("GameStateManager 初始化完成");
     }
@@ -90,9 +91,14 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         StateMachine.OnStateChanged += OnStateChanged;
     }
 
-    private void Update()
+    protected override void OnUpdate()
     {
+        base.OnUpdate();
         StateMachine?.OnUpdate(Time.deltaTime);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            AddCommand(new QuitGameCommand());
+        }
     }
 
     private void FixedUpdate()

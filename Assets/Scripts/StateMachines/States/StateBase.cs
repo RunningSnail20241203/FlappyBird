@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 
 /// <summary>
 /// 抽象基础状态
@@ -43,6 +47,12 @@ public abstract class StateBase : IState
         _commands.Clear();
         foreach (var command in copyCommands)
         {
+            if (command is QuitGameCommand)
+            {
+                QuitGame();
+                return;
+            }
+            
             if (CommandHandlers.TryGetValue(command.Name, out var handlerFunc))
             {
                 handlerFunc.Invoke(command.Args);
@@ -52,6 +62,25 @@ public abstract class StateBase : IState
                 Debug.LogError($"没有找到命令处理函数: {command.Name}");
             }
         }
+    }
+
+    private void QuitGame()
+    {
+        var config = new LoadConfirmDialogConfig()
+        {
+            Title = "退出游戏",
+            Message = "确定要退出游戏吗？",
+            OnConfirm = () =>
+            {
+#if UNITY_EDITOR
+                EditorApplication.isPlaying = false;
+#else
+                Application.Quit();
+#endif
+            },
+            OnCancel = () => { }
+        };
+        ConfirmDialogManager.Instance.ShowConfirmDialog(config);
     }
 }
 
