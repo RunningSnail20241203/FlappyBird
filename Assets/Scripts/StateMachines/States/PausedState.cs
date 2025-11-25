@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -5,8 +7,11 @@ using UnityEngine;
 /// </summary>
 public class PausedState : GameStateBase
 {
-    public override string Name => "Paused";
-
+    protected override Dictionary<string, Action<BaseCommandArgs>> CommandHandlers => new()
+    {
+        {nameof(PauseGameCommand), PauseGameCommandHandler},
+    };
+    
     public override void OnEnter()
     {
         Debug.Log("进入暂停状态");
@@ -14,14 +19,16 @@ public class PausedState : GameStateBase
         UIManager.Instance.ShowPausePanel();
     }
 
-    public override void OnUpdate(float deltaTime)
-    {
-        // 暂停状态逻辑
-    }
-
     public override void OnExit()
     {
         Debug.Log("退出暂停状态");
         Time.timeScale = 1f;
+        
+        UIManager.Instance.HidePausePanel();
+    }
+    
+    private void PauseGameCommandHandler(BaseCommandArgs obj)
+    {
+        GameStateManager.Instance.ResumeGame();
     }
 }

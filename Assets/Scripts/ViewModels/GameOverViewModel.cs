@@ -1,17 +1,23 @@
-public class GameViewModel : ViewModelBase
+public class GameOverViewModel : ViewModelBase
 {
     public Observable<int> Score { get; } = new();
 
-    public void PauseGame()
+    public void RestartGame()
     {
-        GameStateManager.Instance.AddCommand(new PauseGameCommand());
+        GameStateManager.Instance.AddCommand(new ReStartGameCommand());
+    }
+
+    public void ReturnMainMenu()
+    {
+        GameStateManager.Instance.AddCommand(new ReturnMainMenuCommand());
     }
 
     protected override void InitializeProperties()
     {
         base.InitializeProperties();
         ScoreManager.Instance.OnScoreChanged += OnScoreChanged;
-        OnScoreChanged(string.Empty, ScoreManager.Instance.QueryScore(BirdManager.Instance.MyBird.name));
+        OnScoreChanged(BirdManager.Instance.MyBird.name,
+            ScoreManager.Instance.QueryScore(BirdManager.Instance.MyBird.name));
     }
 
     protected override void OnDispose()

@@ -7,7 +7,6 @@ using UnityEngine;
 /// </summary>
 public class GameOverState : GameStateBase
 {
-    public override string Name => "GameOver";
 
     protected override Dictionary<string, Action<BaseCommandArgs>> CommandHandlers => new()
     {
@@ -21,9 +20,6 @@ public class GameOverState : GameStateBase
         Debug.Log("进入游戏结束状态");
         UIManager.Instance.ShowGameOverPanel();
         AudioManager.Instance.PlaySound("GameOver");
-
-        // 上传分数到排行榜
-        OnlineManager.Instance.UploadScore(ScoreManager.Instance.CurrentScore);
     }
 
     public override void OnExit()
@@ -34,8 +30,10 @@ public class GameOverState : GameStateBase
         BirdManager.Instance.Birds.ForEach(x => x.ResetBird());
         // 清空屏幕上的管道
         PipeSpawner.Instance.ReturnAllPipes();
-
+        // 关闭结算界面
         UIManager.Instance.HideGameOverPanel();
+        // 清空积分
+        ScoreManager.Instance.ClearAllScores();
     }
 
     private void ReturnMainMenuCommandHandler(BaseCommandArgs obj)

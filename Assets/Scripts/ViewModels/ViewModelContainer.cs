@@ -52,16 +52,20 @@ public class ViewModelContainer : MonoSingleton<ViewModelContainer>
         }
 
         var type = typeof(T);
-        if (!_referenceCounts.TryGetValue(type, out var count)) return;
-        _referenceCounts[type] = count - 1;
-
-        // 根据生命周期决定是否销毁
-        if (ShouldDestroyViewModel(type))
-        {
-            DestroyViewModel(type);
-        }
+        ReleaseViewModel(type);
     }
 
+    public void ReleaseViewModel(IViewModel viewModel)
+    {
+        if (!IsValid())
+        {
+            Debug.LogError("ViewModelContainer,Not Initialized");
+            return;
+        }
+
+        var type = viewModel.GetType();
+        ReleaseViewModel(type);
+    }
 
     public bool IsValid()
     {
@@ -130,5 +134,17 @@ public class ViewModelContainer : MonoSingleton<ViewModelContainer>
 
         _initialized = true;
         Debug.Log($"Successfully loaded {_lifetimeScopes.Count} view model configurations.");
+    }
+
+    private void ReleaseViewModel(Type type)
+    {
+        if (!_referenceCounts.TryGetValue(type, out var count)) return;
+        _referenceCounts[type] = count - 1;
+
+        // 根据生命周期决定是否销毁
+        if (ShouldDestroyViewModel(type))
+        {
+            DestroyViewModel(type);
+        }
     }
 }

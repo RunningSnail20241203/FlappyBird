@@ -18,6 +18,11 @@ public class BaseSceneComController : MonoBehaviour, ISceneComController, IRecyc
         _isMoving = false;
     }
 
+    public void ResumeMove()
+    {
+        _isMoving = true;
+    }
+
     public void OnRecycle()
     {
         StopMove();

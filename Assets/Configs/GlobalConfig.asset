@@ -15,7 +15,7 @@ MonoBehaviour:
   pipeMoveSpeed: 200
   spawnInterval: 2
   spawnXPosition: 1100
-  pipeTriggerOffsetX: 100
+  pipeTriggerOffsetX: 150
   upPipeYRange: {x: 350, y: 600}
   downPipeYRange: {x: -600, y: -350}
   pipePrefab: {fileID: 1726638839803202, guid: d39655f7b3547274cac3e9a9f28f930c, type: 3}

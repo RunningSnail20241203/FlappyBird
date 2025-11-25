@@ -7,11 +7,11 @@ using UnityEngine;
 /// </summary>
 public class PlayingState : GameStateBase
 {
-    public override string Name => "Playing";
-
     protected override Dictionary<string, Action<BaseCommandArgs>> CommandHandlers => new()
     {
         { nameof(GameOverCommand), GameOverCommandHandler },
+        { nameof(PauseGameCommand), PauseGameCommandHandler },
+        { nameof(AddScoreCommand), AddScoreCommandHandler },
     };
 
     public override void OnEnter()
@@ -20,18 +20,15 @@ public class PlayingState : GameStateBase
         Debug.Log("进入游戏状态");
         UIManager.Instance.ShowGamePanel();
         AudioManager.Instance.PlayBackgroundMusic("GameMusic");
-
-        // 开始生成管道
-        PipeSpawner.Instance.StartSpawning();
-        
         BirdManager.Instance.Birds.ForEach(x => x.StartBird());
-    }
-
-    public override void OnUpdate(float deltaTime)
-    {
-        base.OnUpdate(deltaTime);
-        // 游戏逻辑更新
-        ScoreManager.Instance.OnUpdate(deltaTime);
+        if (GameStateManager.Instance.StateMachine.PreviousState is PausedState)
+        {
+            PipeSpawner.Instance.ResumeSpawning();
+        }
+        else
+        {
+            PipeSpawner.Instance.StartSpawning();
+        }
     }
 
     public override void OnExit()
@@ -39,13 +36,29 @@ public class PlayingState : GameStateBase
         base.OnExit();
         Debug.Log("退出游戏状态");
         UIManager.Instance.HideGamePanel();
-        PipeSpawner.Instance.StopSpawning();
-        PipeSpawner.Instance.StopMovingPipe();
+        PipeSpawner.Instance.PauseSpawning();
         BirdManager.Instance.Birds.ForEach(x => x.PauseBird());
     }
 
     private void GameOverCommandHandler(BaseCommandArgs args)
     {
         GameStateManager.Instance.GameOver();
+    }
+
+    private void PauseGameCommandHandler(BaseCommandArgs obj)
+    {
+        GameStateManager.Instance.PauseGame();
+    }
+
+    private void AddScoreCommandHandler(BaseCommandArgs obj)
+    {
+        if (obj is AddScoreArgs args)
+        {
+            ScoreManager.Instance.AddScore(args.Target, args.Score);
+        }
+        else
+        {
+            Debug.LogError($"AddScoreCommandHandler: args is not AddScoreArgs :{obj}");
+        }
     }
 }

@@ -22,18 +22,24 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
     {
         _isSpawning = true;
         _timer = 0f;
+        SpawnOnePairPipe();
     }
-
-    public void StopSpawning()
+    
+    public void PauseSpawning()
     {
         _isSpawning = false;
-    }
-
-    public void StopMovingPipe()
-    {
         foreach (var pipe in _sceneComs)
         {
             pipe.StopMove();
+        }
+    }
+
+    public void ResumeSpawning()
+    {
+        _isSpawning = true;
+        foreach (var pipe in _sceneComs)
+        {
+            pipe.ResumeMove();
         }
     }
 
@@ -76,8 +82,8 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
         _timer += Time.deltaTime;
 
         if (_timer < _globalConfig.spawnInterval) return;
-        SpawnOnePairPipe();
         _timer = 0f;
+        SpawnOnePairPipe();
     }
 
     private void SpawnOnePairPipe()
@@ -90,7 +96,7 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
     private void SpawnTrigger(float spawnXPosition, float moveSpeed)
     {
         var spawnPosition = new Vector3(spawnXPosition, 0f, 0f);
-        var pipe = GameObjectPool.Instance.Get(PipePoolName, spawnPosition, Quaternion.identity);
+        var pipe = GameObjectPool.Instance.Get(PipeTriggerPoolName, spawnPosition, Quaternion.identity);
         if (pipe == null) return;
         var controller = pipe.GetComponent<PipeTriggerController>();
         _sceneComs.Add(controller);

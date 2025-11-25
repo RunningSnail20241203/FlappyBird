@@ -7,7 +7,6 @@ public class GameStateManager : MonoSingleton<GameStateManager>
 {
     public StateMachine<GameStateBase> StateMachine { get; set; }
 
-
     /// <summary>
     /// 切换到菜单状态
     /// </summary>
@@ -46,6 +45,11 @@ public class GameStateManager : MonoSingleton<GameStateManager>
     public void GameOver()
     {
         StateMachine.ChangeState<GameOverState>();
+    }
+
+    public void OpenSettings()
+    {
+        StateMachine.ChangeState<SettingState>();
     }
 
     public void AddCommand(CommandBase commandBase)

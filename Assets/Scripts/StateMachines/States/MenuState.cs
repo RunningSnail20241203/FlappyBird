@@ -7,12 +7,12 @@ using UnityEngine;
 /// </summary>
 public class MenuState : GameStateBase
 {
-    public override string Name => "Menu";
-
     protected override Dictionary<string, Action<BaseCommandArgs>> CommandHandlers => new()
     {
-        {nameof(StartGameCommand), StartGameCommandHandler}
+        { nameof(StartGameCommand), StartGameCommandHandler },
+        { nameof(OpenSettingCommand), OpenSettingCommandHandler },
     };
+
 
     public override void OnEnter()
     {
@@ -20,9 +20,6 @@ public class MenuState : GameStateBase
         base.OnEnter();
         UIManager.Instance.ShowMenuPanel();
         AudioManager.Instance.PlayBackgroundMusic("MenuMusic");
-        
-        // 重置游戏数据
-        ScoreManager.Instance.ResetScore();
     }
 
     public override void OnExit()
@@ -35,5 +32,11 @@ public class MenuState : GameStateBase
     private void StartGameCommandHandler(BaseCommandArgs args)
     {
         GameStateManager.Instance.StartPlay();
+    }
+
+
+    private void OpenSettingCommandHandler(BaseCommandArgs obj)
+    {
+        GameStateManager.Instance.OpenSettings();
     }
 }

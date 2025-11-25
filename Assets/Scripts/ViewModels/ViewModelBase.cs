@@ -25,6 +25,7 @@ public abstract class ViewModelBase : IViewModel
     public virtual void Dispose()
     {
         UnbindAll();
+        OnDispose();
     }
 
     // === ICommandProvider 实现 ===
@@ -80,5 +81,10 @@ public abstract class ViewModelBase : IViewModel
 
     protected virtual void InitializeProperties()
     {
+    }
+
+    protected virtual void OnDispose()
+    {
+        
     }
 }

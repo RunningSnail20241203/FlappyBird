@@ -3,6 +3,5 @@
 /// </summary>
 public abstract class GameStateBase : StateBase
 {
-    public abstract override string Name { get; }
-    
+
 }

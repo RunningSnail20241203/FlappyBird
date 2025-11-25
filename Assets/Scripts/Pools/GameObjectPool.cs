@@ -112,8 +112,8 @@ public class GameObjectPool : MonoSingleton<GameObjectPool>
         var obj = pool.Get();
         if (obj == null) return obj;
 
-        obj.transform.position = position;
-        obj.transform.rotation = rotation;
+        obj.transform.localPosition = position;
+        obj.transform.localRotation = rotation;
 
         return obj;
     }

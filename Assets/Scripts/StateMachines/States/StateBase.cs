@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public abstract class StateBase : IState
 {
-    public abstract string Name { get; }
+    public virtual string Name  => GetType().Name;
     private readonly List<CommandBase> _commands = new();
     protected virtual Dictionary<string, Action<BaseCommandArgs>> CommandHandlers { get; } = new();
     
@@ -26,6 +26,7 @@ public abstract class StateBase : IState
     
     public void AddCommand(CommandBase commandBase)
     {
+        Debug.Log($"当前状态：{Name},添加命令: {commandBase.Name}");
         _commands.Add(commandBase);
     }
 
