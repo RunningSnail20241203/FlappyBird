@@ -18,7 +18,7 @@ public class GameOverState : GameStateBase
     {
         base.OnEnter();
         UIManager.Instance.ShowGameOverPanel();
-        AudioManager.Instance.PlaySound("GameOver");
+        // AudioManager.Instance.PlaySound("GameOver");
     }
 
     public override void OnExit()

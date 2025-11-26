@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 5250176758e2a1d4a8d9e80db5bd9dec
   m_SerializeEntries:
+  - m_GUID: 169186e16b75b9b45b7dfc8902763da9
+    m_Address: Assets/Audios/Sounds
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 208b273938770db4cbf09cafe5d7e842
     m_Address: Assets/Prefabs/UI/Views
     m_ReadOnly: 0

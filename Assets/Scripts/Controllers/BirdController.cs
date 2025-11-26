@@ -19,6 +19,15 @@ public class BirdController : MonoBehaviour, IController
     private const string CollisionTag = "Obstacle";
     private const string ScoreTriggerTag = "ScoreTrigger";
 
+    private readonly List<string> _jumpSounds = new()
+    {
+        "impactSoft_heavy_000",
+        "impactSoft_heavy_001",
+        "impactSoft_heavy_002",
+        "impactSoft_heavy_003",
+        "impactSoft_heavy_004",
+    };
+
     public void ResetBird()
     {
         transform.position = birdBirthPoint.position;
@@ -48,6 +57,8 @@ public class BirdController : MonoBehaviour, IController
     private void Jump()
     {
         _rb.velocity = new Vector2(0, jumpVelocity);
+        var audioName = _jumpSounds[Random.Range(0, _jumpSounds.Count)];
+        AudioManager.Instance.PlaySound(audioName);
     }
 
     private void Awake()

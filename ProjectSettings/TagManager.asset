@@ -10,6 +10,7 @@ TagManager:
   - Obstacle
   - WorldCanvas
   - ScoreTrigger
+  - AudioPlayer
   layers:
   - Default
   - TransparentFX
