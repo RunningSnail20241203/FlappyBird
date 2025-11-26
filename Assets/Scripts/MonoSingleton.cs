@@ -66,7 +66,7 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
         OnInitialize();
     }
 
-    protected virtual void Update()
+    private void Update()
     {
         OnUpdate();
     }

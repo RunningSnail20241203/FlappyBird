@@ -17,7 +17,6 @@ public class GameOverState : GameStateBase
     public override void OnEnter()
     {
         base.OnEnter();
-        Debug.Log("进入游戏结束状态");
         UIManager.Instance.ShowGameOverPanel();
         AudioManager.Instance.PlaySound("GameOver");
     }
@@ -25,7 +24,6 @@ public class GameOverState : GameStateBase
     public override void OnExit()
     {
         base.OnExit();
-        Debug.Log("退出游戏结束状态");
         // 重置小鸟的位置和重力因子
         BirdManager.Instance.Birds.ForEach(x => x.ResetBird());
         // 清空屏幕上的管道

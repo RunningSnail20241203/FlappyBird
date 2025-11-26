@@ -17,7 +17,6 @@ public class PlayingState : GameStateBase
     public override void OnEnter()
     {
         base.OnEnter();
-        Debug.Log("进入游戏状态");
         UIManager.Instance.ShowGamePanel();
         AudioManager.Instance.PlayBackgroundMusic("GameMusic");
         BirdManager.Instance.Birds.ForEach(x => x.StartBird());
@@ -34,7 +33,6 @@ public class PlayingState : GameStateBase
     public override void OnExit()
     {
         base.OnExit();
-        Debug.Log("退出游戏状态");
         UIManager.Instance.HideGamePanel();
         PipeSpawner.Instance.PauseSpawning();
         BirdManager.Instance.Birds.ForEach(x => x.PauseBird());

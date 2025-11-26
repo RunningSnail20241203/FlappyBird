@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class UIBase : MonoBehaviour
 {
-    [SerializeField] protected string uiName;
-    [SerializeField] protected bool isVisible = false;
-    private List<IViewModel> _viewModels = new();
+    private readonly List<IViewModel> _viewModels = new();
 
-    public string UIName => uiName;
-    public bool IsVisible => isVisible;
+    public string UIName => GetType().Name;
+    public bool IsVisible => _isVisible;
+    private bool _isVisible = false;
 
 
     public virtual void Initialize()
@@ -19,14 +18,14 @@ public class UIBase : MonoBehaviour
 
     public virtual void Show(Action onComplete = null)
     {
-        if (isVisible)
+        if (_isVisible)
         {
             onComplete?.Invoke();
             return;
         }
 
         gameObject.SetActive(true);
-        isVisible = true;
+        _isVisible = true;
 
         // 简单的显示逻辑，子类可以重写添加动画
         OnShow();
@@ -35,14 +34,14 @@ public class UIBase : MonoBehaviour
 
     public virtual void Hide(Action onComplete = null)
     {
-        if (!isVisible)
+        if (!_isVisible)
         {
             onComplete?.Invoke();
             return;
         }
 
         gameObject.SetActive(false);
-        isVisible = false;
+        _isVisible = false;
 
         OnHide();
         onComplete?.Invoke();

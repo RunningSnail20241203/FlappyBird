@@ -15,5 +15,5 @@ public interface IObservable<T> : IObservable
 {
     new event Action<T> OnValueChanged;
     new T Value { get; }
-     void SetValue(T value);
+    void SetValue(T value);
 }

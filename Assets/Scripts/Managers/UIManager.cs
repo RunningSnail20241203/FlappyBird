@@ -62,6 +62,17 @@ public class UIManager : MonoSingleton<UIManager>
     {
         HideUI(UIScreen.Settings);
     }
+    
+    public void ShowThanksPanel()
+    {
+        ShowUI(new LoadUIConfig { UIName = UIScreen.Thanks });
+    }
+
+    public void HideThanksPanel()
+    {
+        HideUI(UIScreen.Settings);
+    }
+
 
 
     public void ShowUI<T>(LoadUIConfig<T> config) where T : UIBase
@@ -371,6 +382,6 @@ public class UIManager : MonoSingleton<UIManager>
 
     private string GetUIPath(string viewName)
     {
-        return $"Assets/Prefabs/UI/Views/{viewName}View.prefab";
+        return $"Assets/Prefabs/UI/Views/{viewName}.prefab";
     }
 }

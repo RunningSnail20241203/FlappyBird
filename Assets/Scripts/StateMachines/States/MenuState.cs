@@ -11,12 +11,12 @@ public class MenuState : GameStateBase
     {
         { nameof(StartGameCommand), StartGameCommandHandler },
         { nameof(OpenSettingCommand), OpenSettingCommandHandler },
+        { nameof(OpenThanksCommand), OpenThanksCommandHandler }
     };
 
 
     public override void OnEnter()
     {
-        Debug.Log("进入菜单状态");
         base.OnEnter();
         UIManager.Instance.ShowMenuPanel();
         AudioManager.Instance.PlayBackgroundMusic("MenuMusic");
@@ -25,7 +25,6 @@ public class MenuState : GameStateBase
     public override void OnExit()
     {
         base.OnExit();
-        Debug.Log("退出菜单状态");
         UIManager.Instance.HideMenuPanel();
     }
 
@@ -34,9 +33,13 @@ public class MenuState : GameStateBase
         GameStateManager.Instance.StartPlay();
     }
 
-
     private void OpenSettingCommandHandler(BaseCommandArgs obj)
     {
-        GameStateManager.Instance.OpenSettings();
+        GameStateManager.Instance.GotoSettings();
+    }
+
+    private void OpenThanksCommandHandler(BaseCommandArgs obj)
+    {
+        GameStateManager.Instance.GotoThanks();
     }
 }

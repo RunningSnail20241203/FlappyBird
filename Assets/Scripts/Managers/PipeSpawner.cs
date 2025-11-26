@@ -75,8 +75,9 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
     }
 
 
-    private void Update()
+    protected override void OnUpdate()
     {
+        base.OnUpdate();
         if (!_isSpawning) return;
 
         _timer += Time.deltaTime;
@@ -97,7 +98,7 @@ public class PipeSpawner : MonoSingleton<PipeSpawner>
     {
         var randomY = Random.Range(pipeCenterY.x, pipeCenterY.y);
         var randomIntervalY = Random.Range(pipeIntervalY.x, pipeIntervalY.y);
-        Debug.Log($"SpawnPipe: {randomY}, {randomIntervalY}");
+
         var spawnPosition1 = new Vector3(pipeXPosition, randomY + randomIntervalY / 2, 0f);
         var spawnPosition2 = new Vector3(pipeXPosition, randomY - randomIntervalY / 2, 0f);
         SpawnPipe(spawnPosition1, pipeMoveSpeed, true);

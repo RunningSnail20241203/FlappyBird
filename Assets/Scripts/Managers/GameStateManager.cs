@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class GameStateManager : MonoSingleton<GameStateManager>
 {
-    public StateMachine<GameStateBase> StateMachine { get; set; }
+    public StateMachine<GameStateBase> StateMachine { get; private set; }
 
     /// <summary>
     /// 切换到菜单状态
@@ -47,9 +47,14 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         StateMachine.ChangeState<GameOverState>();
     }
 
-    public void OpenSettings()
+    public void GotoSettings()
     {
         StateMachine.ChangeState<SettingState>();
+    }
+
+    public void GotoThanks()
+    {
+        StateMachine.ChangeState<ThanksState>();
     }
 
     public void AddCommand(CommandBase commandBase)
@@ -74,6 +79,7 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         var pausedState = new PausedState();
         var gameOverState = new GameOverState();
         var settingState = new SettingState();
+        var thanksState = new ThanksState();
 
         // 添加状态
         StateMachine.AddState(menuState);
@@ -81,6 +87,7 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         StateMachine.AddState(pausedState);
         StateMachine.AddState(gameOverState);
         StateMachine.AddState(settingState);
+        StateMachine.AddState(thanksState);
 
 
         // 添加状态过渡
@@ -109,7 +116,6 @@ public class GameStateManager : MonoSingleton<GameStateManager>
     private void OnStateChanged(GameStateBase oldState, GameStateBase newState)
     {
         // 状态变化时的额外处理
-        Debug.Log($"游戏状态变化: {oldState?.Name} -> {newState.Name}");
     }
 
 

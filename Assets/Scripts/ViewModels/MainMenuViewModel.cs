@@ -1,11 +1,5 @@
 public class MainMenuViewModel : ViewModelBase
 {
-    public void QuitGame()
-    {
-
-        GameStateManager.Instance.AddCommand(new QuitGameCommand());
-    }
-
     public void StartGame()
     {
         GameStateManager.Instance.AddCommand(new StartGameCommand());
@@ -14,5 +8,10 @@ public class MainMenuViewModel : ViewModelBase
     public void OpenSetting()
     {
         GameStateManager.Instance.AddCommand(new OpenSettingCommand());
+    }
+    
+    public void OpenThanks()
+    {
+        GameStateManager.Instance.AddCommand(new OpenThanksCommand());
     }
 }

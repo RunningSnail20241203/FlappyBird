@@ -7,7 +7,7 @@ public class BirdManager : MonoSingleton<BirdManager>
     
     private const string BirdControllerTag = "BirdController";
 
-    public BirdController MyBird => Birds[0];
+    public BirdController MyBird => Birds[0]; // 临时用第一个小鸟作为自己的小鸟，后续要重构
 
     public void InitializeBirds()
     {

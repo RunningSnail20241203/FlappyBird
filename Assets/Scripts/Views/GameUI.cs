@@ -22,8 +22,16 @@ public class GameUI : UIBase
     {
         base.OnShow();
         var gameViewModel = GetViewModel<GameViewModel>();
-        gameViewModel.Score.OnValueChanged += UpdateScore;
         UpdateScore(gameViewModel.Score.Value);
+        
+        gameViewModel.Score.OnValueChanged += UpdateScore;
+    }
+
+    protected override void OnHide()
+    {
+        var gameViewModel = GetViewModel<GameViewModel>();
+        gameViewModel.Score.OnValueChanged -= UpdateScore;
+        base.OnHide();
     }
 
     private void OnPauseButtonClicked()

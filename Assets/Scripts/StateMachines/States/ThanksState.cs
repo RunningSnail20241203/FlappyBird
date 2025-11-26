@@ -1,7 +1,8 @@
+
 using System;
 using System.Collections.Generic;
 
-public class SettingState : GameStateBase
+public class ThanksState : GameStateBase
 {
     protected override Dictionary<string, Action<BaseCommandArgs>> CommandHandlers => new()
     {
@@ -11,16 +12,18 @@ public class SettingState : GameStateBase
     public override void OnEnter()
     {
         base.OnEnter();
-        UIManager.Instance.ShowSettingPanel();
+        
+        UIManager.Instance.ShowThanksPanel();
     }
 
     public override void OnExit()
     {
         base.OnExit();
-        UIManager.Instance.HideSettingPanel();
+        
+        UIManager.Instance.HideThanksPanel();
     }
 
-    private void ReturnMainMenuCommandHandler(BaseCommandArgs obj)
+    private void ReturnMainMenuCommandHandler(BaseCommandArgs args)
     {
         GameStateManager.Instance.GoToMenu();
     }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 public abstract class ViewModelBase : IViewModel
 {
@@ -16,16 +17,11 @@ public abstract class ViewModelBase : IViewModel
         IsInitialized = true;
     }
 
-    public virtual void UnbindAll()
-    {
-        _commands?.Clear();
-        _observables?.Clear();
-    }
-
     public virtual void Dispose()
     {
-        UnbindAll();
         OnDispose();
+        _commands?.Clear();
+        _observables?.Clear();
     }
 
     // === ICommandProvider 实现 ===
@@ -43,35 +39,32 @@ public abstract class ViewModelBase : IViewModel
 
     // === 可观察属性支持 ===
     private readonly Dictionary<string, IObservable> _observables = new();
+
     // ✅ 统一访问所有Observable
     public IReadOnlyDictionary<string, IObservable> GetAllObservables() => _observables;
 
-    protected Observable<T> CreateObservable<T>(T initialValue = default, [CallerMemberName] string propertyName = "")
+    private IObservable<T> CreateObservable<T>(T initialValue = default, [CallerMemberName] string propertyName = "")
     {
         var observable = new Observable<T>(initialValue);
         _observables[propertyName] = observable;
         return observable;
     }
-    
-    // 通过名称获取可观察属性
-    public IObservable GetObservable(string propertyName)
-    {
-        return _observables.GetValueOrDefault(propertyName);
-    }
-    
+
     // 通过名称获取泛型可观察属性
-    public IObservable<T> GetObservable<T>(string propertyName)
+    protected IObservable<T> GetObservable<T>([CallerMemberName] string propertyName = null)
     {
-        return GetObservable(propertyName) as IObservable<T>;
-    }
-    
-    protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
-    {
-        if (Equals(field, value))
-            return false;
-            
-        field = value;
-        return true;
+        if (propertyName == null)
+        {
+            Debug.LogError($"{GetType().Name} Property {typeof(T).Name} name cannot be null.");
+            return null;
+        }
+
+        if (_observables.TryGetValue(propertyName, out var observable))
+        {
+            return observable as IObservable<T>;
+        }
+
+        return CreateObservable<T>();
     }
 
     // === 抽象方法 ===
@@ -85,6 +78,5 @@ public abstract class ViewModelBase : IViewModel
 
     protected virtual void OnDispose()
     {
-        
     }
 }

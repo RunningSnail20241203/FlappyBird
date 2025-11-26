@@ -14,14 +14,12 @@ public class PausedState : GameStateBase
     
     public override void OnEnter()
     {
-        Debug.Log("进入暂停状态");
         Time.timeScale = 0f;
         UIManager.Instance.ShowPausePanel();
     }
 
     public override void OnExit()
     {
-        Debug.Log("退出暂停状态");
         Time.timeScale = 1f;
         
         UIManager.Instance.HidePausePanel();

@@ -12,7 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13bc9a9122e64394b67b0c9e323adad0, type: 3}
   m_Name: ViewModelScopeConfig
   m_EditorClassIdentifier: 
-  viewModels:
-  - viewModelTypeName: GameViewModel, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    lifetime: 0
+  viewModels: []

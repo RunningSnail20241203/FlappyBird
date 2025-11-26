@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 1273020387341270903}
   - component: {fileID: 3120766502600901681}
   m_Layer: 5
-  m_Name: QuitButton
+  m_Name: ThanksButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -637,7 +637,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u9000\u51FA"
+  m_text: "\u611F\u8C22\u540D\u5355"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f8ad93d66a59473468952ad4a5183ef5, type: 2}
   m_sharedMaterial: {fileID: -3998342743595474137, guid: f8ad93d66a59473468952ad4a5183ef5, type: 2}
@@ -900,7 +900,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 7
+  m_AdditionalShaderChannelsFlag: 31
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -934,8 +934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74ba937c22884d769c96a5d4175e2ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiName: 
-  isVisible: 0
   startButton: {fileID: 3842039790510229505}
   optionButton: {fileID: 692478033541877894}
-  quitButton: {fileID: 3120766502600901681}
+  thanksButton: {fileID: 3120766502600901681}

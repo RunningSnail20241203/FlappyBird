@@ -5,22 +5,21 @@ public class MainMenuUI : UIBase
 {
     [SerializeField] private Button startButton;
     [SerializeField] private Button optionButton;
-    [SerializeField] private Button quitButton;
+    [SerializeField] private Button thanksButton;
 
     public override void Initialize()
     {
         base.Initialize();
-        uiName = "MainMenu";
 
         startButton.onClick.AddListener(OnClickStartButton);
         optionButton.onClick.AddListener(OnClickOptionButton);
-        quitButton.onClick.AddListener(OnClickQuitButton);
+        thanksButton.onClick.AddListener(OnClickThanksButton);
     }
 
-    private void OnClickQuitButton()
+    private void OnClickThanksButton()
     {
         var mainMenuViewModel = GetViewModel<MainMenuViewModel>();
-        mainMenuViewModel.QuitGame();
+        mainMenuViewModel.OpenThanks();
     }
 
     private void OnClickOptionButton()

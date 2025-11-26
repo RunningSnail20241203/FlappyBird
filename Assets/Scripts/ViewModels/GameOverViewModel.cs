@@ -1,6 +1,6 @@
 public class GameOverViewModel : ViewModelBase
 {
-    public Observable<int> Score { get; } = new();
+    public Observable<int> Score => GetObservable<int>() as Observable<int>;
 
     public void RestartGame()
     {
@@ -15,9 +15,8 @@ public class GameOverViewModel : ViewModelBase
     protected override void InitializeProperties()
     {
         base.InitializeProperties();
+        OnScoreChanged(string.Empty, ScoreManager.Instance.QueryScore(BirdManager.Instance.MyBird.name));
         ScoreManager.Instance.OnScoreChanged += OnScoreChanged;
-        OnScoreChanged(BirdManager.Instance.MyBird.name,
-            ScoreManager.Instance.QueryScore(BirdManager.Instance.MyBird.name));
     }
 
     protected override void OnDispose()
