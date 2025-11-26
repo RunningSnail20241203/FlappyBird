@@ -193,7 +193,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 31
+  m_AdditionalShaderChannelsFlag: 7
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -227,8 +227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d022241ba60041dc8a589705c7631d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiName: 
-  isVisible: 0
   pauseButton: {fileID: 1371307188306719372}
   scoreText: {fileID: 6917945758015885686}
 --- !u!1 &4934267545900546758

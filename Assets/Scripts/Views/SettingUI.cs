@@ -59,11 +59,11 @@ public class SettingUI : UIBase
 
     private void UpdateMusicToggle(bool arg0)
     {
-        musicToggle.isOn = arg0;
+        musicToggle.SetIsOnWithoutNotify(arg0);
     }
 
     private void UpdateSoundToggle(bool obj)
     {
-        soundToggle.isOn = obj;
+        soundToggle.SetIsOnWithoutNotify(obj);
     }
 }

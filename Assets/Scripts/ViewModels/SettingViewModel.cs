@@ -23,6 +23,9 @@ public class SettingViewModel : ViewModelBase
     {
         base.InitializeProperties();
 
+        OnMusicToggleChanged(SettingManager.Instance.IsMusicEnabled);
+        OnSoundToggleChanged(SettingManager.Instance.IsSoundEnabled);
+        
         SettingManager.Instance.OnMusicToggleChanged += OnMusicToggleChanged;
         SettingManager.Instance.OnSoundToggleChanged += OnSoundToggleChanged;
     }

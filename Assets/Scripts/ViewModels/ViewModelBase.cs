@@ -64,7 +64,7 @@ public abstract class ViewModelBase : IViewModel
             return observable as IObservable<T>;
         }
 
-        return CreateObservable<T>();
+        return CreateObservable<T>(propertyName: propertyName);
     }
 
     // === 抽象方法 ===

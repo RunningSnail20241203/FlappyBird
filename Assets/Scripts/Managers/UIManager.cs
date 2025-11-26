@@ -70,7 +70,7 @@ public class UIManager : MonoSingleton<UIManager>
 
     public void HideThanksPanel()
     {
-        HideUI(UIScreen.Settings);
+        HideUI(UIScreen.Thanks);
     }
 
 
