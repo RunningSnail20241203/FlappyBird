@@ -845,7 +845,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f9fbd9ee5b26dfb4c9eb287e00a44090, type: 3}
+  m_Sprite: {fileID: -2118465031, guid: 2641d4d68d5c38b42bd8e2ae30a06815, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -920,7 +920,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8c2a648264c476544bbdd5f721844638, type: 3}
+  m_Sprite: {fileID: 896763366, guid: 2641d4d68d5c38b42bd8e2ae30a06815, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -990,7 +990,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 7
+  m_AdditionalShaderChannelsFlag: 31
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1024,8 +1024,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e160d16c46a444ca45570cadc0070fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiName: 
-  isVisible: 0
   scoreText: {fileID: 2416646060799125918}
   reStartButton: {fileID: 8840742941307874045}
   returnMainMenuButton: {fileID: 819037746756124475}
