@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameStateManager : MonoSingleton<GameStateManager>
 {
     public StateMachine<GameStateBase> StateMachine { get; private set; }
+    public GameStateBase CurrentState => StateMachine.CurrentState;
 
     /// <summary>
     /// 切换到菜单状态
@@ -57,9 +58,9 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         StateMachine.ChangeState<ThanksState>();
     }
 
-    public void AddCommand(CommandBase commandBase)
+    public void AddCommand(ICommand command)
     {
-        StateMachine.CurrentState.AddCommand(commandBase);
+        StateMachine.CurrentState.AddCommand(command);
     }
 
     protected override void OnInitialize()
@@ -101,16 +102,15 @@ public class GameStateManager : MonoSingleton<GameStateManager>
     protected override void OnUpdate()
     {
         base.OnUpdate();
-        StateMachine?.OnUpdate(Time.deltaTime);
+    }
+
+    protected override void OnFixedUpdate()
+    {
+        StateMachine?.OnFixedUpdate(Time.fixedDeltaTime);
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             AddCommand(new QuitGameCommand());
         }
-    }
-
-    private void FixedUpdate()
-    {
-        StateMachine?.OnFixedUpdate(Time.fixedDeltaTime);
     }
 
     private void OnStateChanged(GameStateBase oldState, GameStateBase newState)

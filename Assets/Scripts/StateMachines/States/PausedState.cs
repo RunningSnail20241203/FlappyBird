@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class PausedState : GameStateBase
 {
-    protected override Dictionary<string, Action<BaseCommandArgs>> CommandHandlers => new()
+    protected override Dictionary<string, Action<ICommandArg>> CommandHandlers => new()
     {
         {nameof(PauseGameCommand), PauseGameCommandHandler},
     };
@@ -25,7 +25,7 @@ public class PausedState : GameStateBase
         UIManager.Instance.HidePausePanel();
     }
     
-    private void PauseGameCommandHandler(BaseCommandArgs obj)
+    private void PauseGameCommandHandler(ICommandArg obj)
     {
         GameStateManager.Instance.ResumeGame();
     }

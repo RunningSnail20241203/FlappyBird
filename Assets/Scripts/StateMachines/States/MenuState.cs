@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class MenuState : GameStateBase
 {
-    protected override Dictionary<string, Action<BaseCommandArgs>> CommandHandlers => new()
+    protected override Dictionary<string, Action<ICommandArg>> CommandHandlers => new()
     {
         { nameof(StartGameCommand), StartGameCommandHandler },
         { nameof(OpenSettingCommand), OpenSettingCommandHandler },
@@ -28,17 +28,17 @@ public class MenuState : GameStateBase
         UIManager.Instance.HideMenuPanel();
     }
 
-    private void StartGameCommandHandler(BaseCommandArgs args)
+    private void StartGameCommandHandler(ICommandArg args)
     {
         GameStateManager.Instance.StartPlay();
     }
 
-    private void OpenSettingCommandHandler(BaseCommandArgs obj)
+    private void OpenSettingCommandHandler(ICommandArg obj)
     {
         GameStateManager.Instance.GotoSettings();
     }
 
-    private void OpenThanksCommandHandler(BaseCommandArgs obj)
+    private void OpenThanksCommandHandler(ICommandArg obj)
     {
         GameStateManager.Instance.GotoThanks();
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class SettingState : GameStateBase
 {
-    protected override Dictionary<string, Action<BaseCommandArgs>> CommandHandlers => new()
+    protected override Dictionary<string, Action<ICommandArg>> CommandHandlers => new()
     {
         { nameof(ReturnMainMenuCommand), ReturnMainMenuCommandHandler },
     };
@@ -20,7 +20,7 @@ public class SettingState : GameStateBase
         UIManager.Instance.HideSettingPanel();
     }
 
-    private void ReturnMainMenuCommandHandler(BaseCommandArgs obj)
+    private void ReturnMainMenuCommandHandler(ICommandArg obj)
     {
         GameStateManager.Instance.GoToMenu();
     }

@@ -21,15 +21,15 @@ public class ConfirmDialogUI : UIBase
         cancelButton.onClick.AddListener(OnClickCancelButton);
     }
 
-    public void Show(LoadConfirmDialogConfig config)
+    public void Show(ConfirmDialogUIData uiData)
     {
         base.Show();
-        titleText.text = config.Title;
-        messageText.text = config.Message;
-        confirmButton.gameObject.SetActive(config.OnConfirm != null);
-        cancelButton.gameObject.SetActive(config.OnCancel != null);
-        _onConfirm = config.OnConfirm;
-        _onCancel = config.OnCancel;
+        titleText.text = uiData.Title;
+        messageText.text = uiData.Message;
+        confirmButton.gameObject.SetActive(uiData.OnConfirm != null);
+        cancelButton.gameObject.SetActive(uiData.OnCancel != null);
+        _onConfirm = uiData.OnConfirm;
+        _onCancel = uiData.OnCancel;
     }
 
     private void OnClickConfirmButton()

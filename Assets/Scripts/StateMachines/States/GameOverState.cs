@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary>
 /// 游戏结束状态
@@ -8,7 +7,7 @@ using UnityEngine;
 public class GameOverState : GameStateBase
 {
 
-    protected override Dictionary<string, Action<BaseCommandArgs>> CommandHandlers => new()
+    protected override Dictionary<string, Action<ICommandArg>> CommandHandlers => new()
     {
         { nameof(ReStartGameCommand), ReStartGameCommandHandler },
         { nameof(ReturnMainMenuCommand), ReturnMainMenuCommandHandler },
@@ -34,12 +33,12 @@ public class GameOverState : GameStateBase
         ScoreManager.Instance.ClearAllScores();
     }
 
-    private void ReturnMainMenuCommandHandler(BaseCommandArgs obj)
+    private void ReturnMainMenuCommandHandler(ICommandArg obj)
     {
         GameStateManager.Instance.GoToMenu();
     }
 
-    private void ReStartGameCommandHandler(BaseCommandArgs obj)
+    private void ReStartGameCommandHandler(ICommandArg obj)
     {
         GameStateManager.Instance.StartPlay();
     }

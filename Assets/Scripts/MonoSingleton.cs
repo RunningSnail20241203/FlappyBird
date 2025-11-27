@@ -8,7 +8,6 @@ using UnityEngine;
 public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
     private static T _instance;
-    private static readonly object _lock = new object();
     protected static bool _isApplicationQuitting = false;
     
     public static T Instance
@@ -21,28 +20,25 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
                 return null;
             }
             
-            lock (_lock)
+            if (_instance != null) return _instance;
+                
+            // 在场景中查找现有实例
+            _instance = FindFirstObjectByType<T>();
+            if (_instance != null) return _instance;
+                
+            // 创建新的游戏对象
+            var singletonObject = new GameObject();
+            _instance = singletonObject.AddComponent<T>();
+            singletonObject.name = $"[MonoSingleton] {typeof(T).Name}";
+                        
+            // 如果不是编辑器模式，设置为跨场景不销毁
+            if (Application.isPlaying)
             {
-                if (_instance != null) return _instance;
-                
-                // 在场景中查找现有实例
-                _instance = FindFirstObjectByType<T>();
-                if (_instance != null) return _instance;
-                
-                // 创建新的游戏对象
-                var singletonObject = new GameObject();
-                _instance = singletonObject.AddComponent<T>();
-                singletonObject.name = $"[MonoSingleton] {typeof(T).Name}";
-                        
-                // 如果不是编辑器模式，设置为跨场景不销毁
-                if (Application.isPlaying)
-                {
-                    DontDestroyOnLoad(singletonObject);
-                }
-                        
-                Debug.Log($"[MonoSingleton] 创建 {typeof(T)} 单例实例");
-                return _instance;
+                DontDestroyOnLoad(singletonObject);
             }
+                        
+            Debug.Log($"[MonoSingleton] 创建 {typeof(T)} 单例实例");
+            return _instance;
         }
     }
     
@@ -70,6 +66,11 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
         OnUpdate();
     }
+
+    private void FixedUpdate()
+    {
+        OnFixedUpdate();
+    }
     
     protected virtual void OnDestroy()
     {
@@ -79,7 +80,7 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
         }
     }
     
-    protected virtual void OnApplicationQuit()
+    private void OnApplicationQuit()
     {
         _isApplicationQuitting = true;
     }
@@ -90,4 +91,6 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     protected virtual void OnInitialize() { }
     
     protected virtual void OnUpdate() { }
+    
+    protected virtual void OnFixedUpdate() { }
 }

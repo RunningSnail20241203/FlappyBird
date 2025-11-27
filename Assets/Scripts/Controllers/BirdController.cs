@@ -67,11 +67,6 @@ public class BirdController : MonoBehaviour, IController
         _eventData = new PointerEventData(EventSystem.current);
         _uiLayer = LayerMask.NameToLayer("UI");
         ResetBird();
-
-        // _currentTrajectory = new BirdTrajectoryData
-        // {
-        //     trajectoryId = DateTime.UtcNow.Ticks
-        // };
     }
 
     // Update is called once per frame
@@ -82,24 +77,16 @@ public class BirdController : MonoBehaviour, IController
         if (Input.touchCount > 0)
         {
             var touch = Input.GetTouch(0);
-        
-            if (touch.phase == TouchPhase.Began)
-            {
-                if (IsPointerOverUIElement(touch.position)) return;
-                _jumpAtThisFrame = true;
-            }
-        }else if(Input.GetMouseButtonDown(0))
+
+            if (touch.phase != TouchPhase.Began) return;
+            if (IsPointerOverUIElement(touch.position)) return;
+            _jumpAtThisFrame = true;
+        }
+        else if (Input.GetMouseButtonDown(0))
         {
             if (IsPointerOverUIElement(Input.mousePosition)) return;
             _jumpAtThisFrame = true;
         }
-     
-        // _currentTrajectory.inputEvents.Add(new InputEvent
-        // {
-        //     timeSinceStart = _logicFrame
-        // });
-        // _jumpQueue.Enqueue(_logicFrame);
-        // Debug.Log($"Jump at logicFrame:{_logicFrame}");
     }
 
     private void FixedUpdate()
@@ -127,15 +114,10 @@ public class BirdController : MonoBehaviour, IController
 
     private void CheckCollision(GameObject other)
     {
-        if (other.CompareTag(CollisionTag))
+        EventManager.Instance.Publish(new BirdCollisionEvent()
         {
-            GameStateManager.Instance.AddCommand(new GameOverCommand());
-        }
-        else if (other.CompareTag(ScoreTriggerTag))
-        {
-            GameStateManager.Instance.AddCommand(new AddScoreCommand
-                { Args = new AddScoreArgs { Score = 1, Target = name } });
-        }
+            EventArgs = new BirdCollisionEventArg() { ColliderTag = other.tag }
+        });
     }
 
     private bool IsPointerOverUIElement(Vector2 position)

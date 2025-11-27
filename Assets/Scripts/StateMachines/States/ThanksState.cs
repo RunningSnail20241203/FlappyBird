@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ThanksState : GameStateBase
 {
-    protected override Dictionary<string, Action<BaseCommandArgs>> CommandHandlers => new()
+    protected override Dictionary<string, Action<ICommandArg>> CommandHandlers => new()
     {
         { nameof(ReturnMainMenuCommand), ReturnMainMenuCommandHandler },
     };
@@ -23,7 +23,7 @@ public class ThanksState : GameStateBase
         UIManager.Instance.HideThanksPanel();
     }
 
-    private void ReturnMainMenuCommandHandler(BaseCommandArgs args)
+    private void ReturnMainMenuCommandHandler(ICommandArg args)
     {
         GameStateManager.Instance.GoToMenu();
     }

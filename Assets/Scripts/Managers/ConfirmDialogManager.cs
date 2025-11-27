@@ -4,7 +4,7 @@ public class ConfirmDialogManager : MonoSingleton<ConfirmDialogManager>
 {
     private Transform _container;
     
-    public void ShowConfirmDialog(LoadConfirmDialogConfig config)
+    public void ShowConfirmDialog(ConfirmDialogUIData uiData)
     {
         if (!IsValid()) return;
         
@@ -14,7 +14,7 @@ public class ConfirmDialogManager : MonoSingleton<ConfirmDialogManager>
             Parent = _container,
             OnComplete = ui =>
             {
-                ui.Show(config);
+                ui.Show(uiData);
             }
         });
     }

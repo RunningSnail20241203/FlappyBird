@@ -129,9 +129,6 @@ public class StateMachine<T> : IStateMachine<T> where T : class, IState
     /// </summary>
     public void OnUpdate(float deltaTime)
     {
-        // 检查状态过渡
-        CheckTransitions();
-
         // 更新当前状态
         CurrentState?.OnUpdate(deltaTime);
     }
@@ -141,6 +138,10 @@ public class StateMachine<T> : IStateMachine<T> where T : class, IState
     /// </summary>
     public void OnFixedUpdate(float fixedDeltaTime)
     {
+        // 检查状态过渡
+        CheckTransitions();
+        
+        // 更新当前状态
         CurrentState?.OnFixedUpdate(fixedDeltaTime);
     }
 
