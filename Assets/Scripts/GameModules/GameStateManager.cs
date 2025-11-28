@@ -34,14 +34,6 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         StateMachine.ChangeState<PlayingState>();
     }
 
-    /// <summary>
-    /// 游戏结束
-    /// </summary>
-    public void GameOver()
-    {
-        StateMachine.ChangeState<GameOverState>();
-    }
-
     public void GotoSettings()
     {
         StateMachine.ChangeState<SettingState>();
@@ -71,14 +63,12 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         // 创建状态实例
         var menuState = new MenuState();
         var playingState = new PlayingState();
-        var gameOverState = new GameOverState();
         var settingState = new SettingState();
         var thanksState = new ThanksState();
 
         // 添加状态
         StateMachine.AddState(menuState);
         StateMachine.AddState(playingState);
-        StateMachine.AddState(gameOverState);
         StateMachine.AddState(settingState);
         StateMachine.AddState(thanksState);
         

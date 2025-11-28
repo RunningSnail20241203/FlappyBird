@@ -23,15 +23,33 @@ public class InfiniteGameMode : GameModeBase
         base.Start();
         
         _generationStrategy.StartGenerating();
-        
         UIManager.Instance.ShowGamePanel();
         AudioManager.Instance.PlayBackgroundMusic("GameMusic");
         BirdManager.Instance.StartBirds();
     }
 
+    public override void Restart()
+    {
+        base.Restart();
+        Cleanup();
+        Start();
+        // 注册事件
+        EventManager.Instance.Subscribe<BirdCollisionEvent>(OnBirdCollision);
+    }
+
+    public override void End()
+    {
+        base.End();
+        UIManager.Instance.ShowGameOverPanel();
+        AudioManager.Instance.PlayBackgroundMusic("EndMusic");
+        BirdManager.Instance.PauseBirds();
+        _generationStrategy.PauseGeneration();
+    }
+
     public override void Pause()
     {
         base.Pause();
+        UIManager.Instance.ShowPausePanel();
         BirdManager.Instance.PauseBirds();
         _generationStrategy.PauseGeneration();
     }
@@ -39,6 +57,7 @@ public class InfiniteGameMode : GameModeBase
     public override void Resume()
     {
         base.Resume();
+        UIManager.Instance.HidePausePanel();
         BirdManager.Instance.ResumeBirds();
         _generationStrategy.ResumeGeneration();
     }
@@ -47,6 +66,7 @@ public class InfiniteGameMode : GameModeBase
     {
         base.Cleanup();
         UIManager.Instance.HideGamePanel();
+        UIManager.Instance.HideGameOverPanel();
         BirdManager.Instance.ResetBirds();
         _generationStrategy.Cleanup();
         EventManager.Instance.Unsubscribe<BirdCollisionEvent>(OnBirdCollision);

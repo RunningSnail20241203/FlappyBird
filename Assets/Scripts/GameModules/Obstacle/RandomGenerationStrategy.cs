@@ -26,6 +26,7 @@ public class RandomGenerationStrategy : IObstacleGenerationStrategy
     {
         _isGenerating = false;
         _pauseTime = Time.time;
+        ObstaclesManager.Instance.PauseAllObstacles();
     }
 
     public void ResumeGeneration()
@@ -33,11 +34,12 @@ public class RandomGenerationStrategy : IObstacleGenerationStrategy
         _isGenerating = true;
         var elapsedTime = Time.time - _pauseTime;
         _nextGenerationTime += elapsedTime;
+        ObstaclesManager.Instance.ResumeAllObstacles();
     }
 
     public void Cleanup()
     {
-        ObstacleSpawnManager.Instance.ReturnAllObstacles();
+        ObstaclesManager.Instance.ReturnAllObstacles();
     }
 
     public void FixedUpdate(float fixedDeltaTime)
@@ -57,7 +59,7 @@ public class RandomGenerationStrategy : IObstacleGenerationStrategy
 
             var y1 = Random.Range(_config.YRange1.x, _config.YRange1.y);
             var y2 = Random.Range(_config.YRange2.x, _config.YRange2.y);
-            ObstacleSpawnManager.Instance.Spawn(new Vector3(_config.XSpawn, y1, 0), y2, _config.MoveSpeed);
+            ObstaclesManager.Instance.Spawn(new Vector3(_config.XSpawn, y1, 0), y2, _config.MoveSpeed);
         }
     }
 }

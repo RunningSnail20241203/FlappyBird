@@ -18,6 +18,16 @@ namespace GameModules.Pipe
             _isMoving = false;
         }
 
+        public void PauseMove()
+        {
+            _isMoving = false;
+        }
+
+        public void ResumeMove()
+        {
+            _isMoving = true;
+        }
+
         private void Update()
         {
             if (!_isMoving) return;

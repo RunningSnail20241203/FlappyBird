@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameModules.Pipe
 {
-    public class ObstacleSpawnManager : MonoSingleton<ObstacleSpawnManager>, IObstacleSpawner
+    public class ObstaclesManager : MonoSingleton<ObstaclesManager>, IObstacleSpawner
     {
         #region Private members
 
@@ -34,6 +34,16 @@ namespace GameModules.Pipe
         {
             _obstacles.ForEach(x => GameObjectPool.Instance.Return(x));
             _obstacles.Clear();
+        }
+
+        public void PauseAllObstacles()
+        {
+            _obstacles.ForEach(x => x.GetComponent<ObstacleController>().PauseMove());
+        }
+
+        public void ResumeAllObstacles()
+        {
+            _obstacles.ForEach(x => x.GetComponent<ObstacleController>().ResumeMove());
         }
 
         protected override void OnInitialize()

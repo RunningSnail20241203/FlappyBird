@@ -21,6 +21,16 @@ public abstract class GameModeBase : IGameMode
     {
     }
 
+    public virtual void Restart()
+    {
+        
+    }
+
+    public virtual void End()
+    {
+        
+    }
+
     public virtual void Cleanup()
     {
     }

@@ -30,6 +30,16 @@ namespace GameModules.Pipe
             mover.StopMove();
         }
 
+        public void PauseMove()
+        {
+            mover.PauseMove();
+        }
+
+        public void ResumeMove()
+        {
+            mover.ResumeMove();
+        }
+
         private void Update()
         {
             if (_recycled || !checker.Check()) return;
