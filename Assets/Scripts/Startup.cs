@@ -8,7 +8,7 @@ public class Startup : MonoBehaviour
         Application.targetFrameRate = 60;
         
         yield return new WaitUntil(() => ViewModelContainer.Instance.IsValid());
-        yield return new WaitUntil(() => PipeSpawner.Instance.IsValid());
+        yield return new WaitUntil(() => ConfigManager.Instance.IsValid());
         
         GameStateManager.Instance.GoToMenu();
     }

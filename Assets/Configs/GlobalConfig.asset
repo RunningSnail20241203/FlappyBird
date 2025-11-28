@@ -12,12 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d24295bb2824800b855c00eb81ea05a, type: 3}
   m_Name: GlobalConfig
   m_EditorClassIdentifier: 
-  pipeMoveSpeed: 200
-  spawnInterval: 3
-  spawnXPosition: 1100
-  pipeTriggerOffsetX: 150
-  pipeIntervalY: {x: 300, y: 500}
-  pipeCenterY: {x: -150, y: 150}
-  centerOffset: 50
-  pipePrefab: {fileID: 1726638839803202, guid: d39655f7b3547274cac3e9a9f28f930c, type: 3}
-  pipeTriggerPrefab: {fileID: 5169871406479726666, guid: ce80f630aa6f7384e9648513476dec49, type: 3}
+  obstaclePrefab: {fileID: 1726638839803202, guid: d39655f7b3547274cac3e9a9f28f930c, type: 3}
