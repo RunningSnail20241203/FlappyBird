@@ -16,7 +16,7 @@ public class BirdManager : MonoSingleton<BirdManager>
             bird.StartBird();
         }
     }
-    
+
     public void ResetBirds()
     {
         foreach (var bird in Birds)
@@ -53,6 +53,17 @@ public class BirdManager : MonoSingleton<BirdManager>
             if (controller != null)
             {
                 Birds.Add(controller);
+            }
+        }
+    }
+
+    public void ChangeLife(string birdId, int changeCount)
+    {
+        foreach (var bird in Birds)
+        {
+            if (bird.name == birdId)
+            {
+                bird.ChangeLife(changeCount);
             }
         }
     }

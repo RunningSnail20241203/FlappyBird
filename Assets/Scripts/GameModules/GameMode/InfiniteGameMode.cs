@@ -1,3 +1,4 @@
+using GameModules.Commands;
 using UnityEngine;
 
 public class InfiniteGameMode : GameModeBase
@@ -82,6 +83,26 @@ public class InfiniteGameMode : GameModeBase
     {
         base.OnUpdate(deltaTime);
         _generationStrategy.Update(deltaTime);
+    }
+    
+    public override void ProcessCommand(ICommand command)
+    {
+        base.ProcessCommand(command);
+        switch (command)
+        {
+            case GameOverCommand:
+                End();
+                break;
+            case StartGameCommand:
+                Restart();
+                break;
+            case PauseGameCommand:
+                Pause();
+                break;
+            case ResumeGameCommand:
+                Resume();
+                break;
+        }
     }
 
     private void OnBirdCollision(BirdCollisionEvent e)

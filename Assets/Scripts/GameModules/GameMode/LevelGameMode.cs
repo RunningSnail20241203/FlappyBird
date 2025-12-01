@@ -1,3 +1,4 @@
+using GameModules.Commands;
 using UnityEngine;
 
 public class LevelGameMode : GameModeBase
@@ -9,7 +10,7 @@ public class LevelGameMode : GameModeBase
     public override void Initialize()
     {
         base.Initialize();
-        
+
         // 注册事件
         EventManager.Instance.Subscribe<BirdCollisionEvent>(OnBirdCollision);
     }
@@ -22,7 +23,7 @@ public class LevelGameMode : GameModeBase
     public override void Cleanup()
     {
         base.Cleanup();
-        
+
         // 注册事件
         EventManager.Instance.Unsubscribe<BirdCollisionEvent>(OnBirdCollision);
     }
@@ -40,14 +41,37 @@ public class LevelGameMode : GameModeBase
     public override void SetGameModeData(IGameModeArg arg)
     {
         base.SetGameModeData(arg);
-        
+
         if (arg is LevelGameData levelData)
         {
             Debug.Log($"设置关卡ID: {levelData.LevelId}");
             // 可以在这里处理关卡ID
         }
     }
-    
+
+    public override void ProcessCommand(ICommand command)
+    {
+        base.ProcessCommand(command);
+        switch (command)
+        {
+            case GameOverCommand:
+                End();
+                break;
+            case StartGameCommand:
+                Restart();
+                break;
+            case PauseGameCommand:
+                Pause();
+                break;
+            case ResumeGameCommand:
+                Resume();
+                break;
+            case DecreaseLifeCommand temp:
+                BirdManager.Instance.ChangeLife(temp.BirdId, -temp.DecreaseCount);
+                break;
+        }
+    }
+
     private void OnBirdCollision(BirdCollisionEvent e)
     {
         if (e.EventArgs is not BirdCollisionEventArg arg) return;
@@ -56,10 +80,12 @@ public class LevelGameMode : GameModeBase
         {
             case CollisionTag:
                 // 游戏结束逻辑
-                GameStateManager.Instance.AddCommand(new GameOverCommand());
+                GameStateManager.Instance.AddCommand(new DecreaseLifeCommand()
+                {
+                    DecreaseCount = 1,
+                });
                 break;
             case ScoreTriggerTag:
-                // 游戏结束逻辑
                 GameStateManager.Instance.AddCommand(new AddScoreCommand()
                 {
                     RoleId = BirdManager.Instance.MyBird.name,

@@ -17,6 +17,7 @@ public class PlayingState : GameStateBase
         { nameof(AddScoreCommand), AddScoreCommandHandler },
         { nameof(StartGameCommand), StartGameCommandHandler },
         { nameof(OpenMainMenuCommand), ReturnMainMenuCommandHandler },
+        { nameof(DecreaseLifeCommand), DecreaseLifeCommandHandler }
     };
 
     private IGameMode _currentGameMode;
@@ -39,24 +40,24 @@ public class PlayingState : GameStateBase
         ScoreManager.Instance.ClearAllScores();
     }
 
-    private void GameOverCommandHandler(ICommand args)
+    private void GameOverCommandHandler(ICommand obj)
     {
-        _currentGameMode.End();
+        _currentGameMode.ProcessCommand(obj);
     }
-    
+
     private void StartGameCommandHandler(ICommand obj)
     {
-        _currentGameMode.Restart();
+        _currentGameMode.ProcessCommand(obj);
     }
 
     private void PauseGameCommandHandler(ICommand obj)
     {
-        _currentGameMode.Pause();
+        _currentGameMode.ProcessCommand(obj);
     }
 
     private void ResumeGameCommandHandler(ICommand obj)
     {
-        _currentGameMode.Resume();
+        _currentGameMode.ProcessCommand(obj);
     }
 
     private void AddScoreCommandHandler(ICommand obj)
@@ -70,11 +71,14 @@ public class PlayingState : GameStateBase
             Debug.LogError($"AddScoreCommandHandler: args is not AddScoreArgs :{obj}");
         }
     }
-    
+
     private void ReturnMainMenuCommandHandler(ICommand obj)
     {
         GameStateManager.Instance.GoToMenu();
     }
 
-    
+    private void DecreaseLifeCommandHandler(ICommand obj)
+    {
+        _currentGameMode.ProcessCommand(obj);
+    }
 }

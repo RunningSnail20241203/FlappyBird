@@ -47,4 +47,9 @@ public abstract class GameModeBase : IGameMode
     public virtual void SetGameModeData(IGameModeArg arg)
     {
     }
+
+    public virtual void ProcessCommand(ICommand command)
+    {
+        
+    }
 }

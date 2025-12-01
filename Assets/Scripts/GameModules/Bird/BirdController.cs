@@ -14,6 +14,7 @@ public class BirdController : MonoBehaviour, IController
     private Vector2 _oldVelocity;
     private PointerEventData _eventData;
     private int _uiLayer;
+    private int _life;
 
     private readonly List<string> _jumpSounds = new()
     {
@@ -47,7 +48,7 @@ public class BirdController : MonoBehaviour, IController
         _rb.gravityScale = 0;
         _canJump = false;
     }
-    
+
     public void ResumeBird()
     {
         _rb.velocity = _oldVelocity;
@@ -138,5 +139,14 @@ public class BirdController : MonoBehaviour, IController
         var raycastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(_eventData, raycastResults);
         return raycastResults;
+    }
+
+    public void ChangeLife(int amount)
+    {
+        _life += amount;
+        EventManager.Instance.Publish(new BirdLifeChangeEvent()
+        {
+            EventArgs = new BirdLifeChangeEventArgs { BirdId = name, ChangeCount = amount, NewLife = _life }
+        });
     }
 }

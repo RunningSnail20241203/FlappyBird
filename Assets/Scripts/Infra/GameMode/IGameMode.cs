@@ -11,4 +11,5 @@ public interface IGameMode
     void OnUpdate(float deltaTime);
     void OnFixedUpdate(float fixedDeltaTime);
     void SetGameModeData(IGameModeArg arg);
+    void ProcessCommand(ICommand command);
 }
