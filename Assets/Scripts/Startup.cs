@@ -1,4 +1,6 @@
 using System.Collections;
+using GameModules;
+using GameModules.UI.ViewModels;
 using UnityEngine;
 
 public class Startup : MonoBehaviour
@@ -9,6 +11,7 @@ public class Startup : MonoBehaviour
         
         yield return new WaitUntil(() => ViewModelContainer.Instance.IsValid());
         yield return new WaitUntil(() => ConfigManager.Instance.IsValid());
+        yield return new WaitUntil(() => LevelManager.Instance.IsValid());
         
         GameStateManager.Instance.GoToMenu();
     }

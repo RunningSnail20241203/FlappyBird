@@ -1,19 +1,23 @@
+using GameModules.UI.ViewModels;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ThanksUI : UIBase
+namespace GameModules.UI.Views
 {
-    [SerializeField] private Button bgButton;
-
-    public override void Initialize()
+    public class ThanksUI : UIBase
     {
-        base.Initialize();
-        bgButton.onClick.AddListener(OnBgButtonClicked);
-    }
+        [SerializeField] private Button bgButton;
 
-    private void OnBgButtonClicked()
-    {
-        var viewModel = GetViewModel<ThanksViewModel>();
-        viewModel.ReturnMenu();
+        public override void Initialize()
+        {
+            base.Initialize();
+            bgButton.onClick.AddListener(OnBgButtonClicked);
+        }
+
+        private void OnBgButtonClicked()
+        {
+            var viewModel = GetViewModel<ThanksViewModel>();
+            viewModel.ReturnMenu();
+        }
     }
 }

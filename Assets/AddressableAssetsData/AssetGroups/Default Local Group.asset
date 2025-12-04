@@ -22,8 +22,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ed3b4738ed7f364f90f3b470498b379
+    m_Address: Assets/Textures/UI/blue_button_square_depth_border.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 208b273938770db4cbf09cafe5d7e842
     m_Address: Assets/Prefabs/UI/Views
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2641d4d68d5c38b42bd8e2ae30a06815
+    m_Address: Assets/Textures/Icons/sheet_white2x.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -32,8 +42,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82b600120b671ff4e8c65f7ab6f02928
+    m_Address: Assets/Textures/UI/gray_button_square_depth_border.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f3d92ed94ad91a47a73d910924f46cc
+    m_Address: Assets/Textures/UI/green_button_square_depth_flat.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c5e8e229bd314ac4ab029e956e993a5a
     m_Address: Assets/Configs/GlobalConfig.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf6b5025ee30ded42a2cb553ceeef680
+    m_Address: Assets/Data/Levels
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

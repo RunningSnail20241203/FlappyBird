@@ -1,4 +1,9 @@
-public class OpenLeaderBoardCommand : ICommand
+using Infra.Command;
+
+namespace GameModules.Commands
 {
-    public string Name => nameof(OpenLeaderBoardCommand);
+    public class OpenLeaderBoardCommand : ICommand
+    {
+        public string Name => nameof(OpenLeaderBoardCommand);
+    }
 }

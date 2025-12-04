@@ -1,15 +1,18 @@
-public struct UIEvent
+namespace GameModules.UI.Views
 {
-    public UIEventType UIEventType;
-}
+    public struct UIEvent
+    {
+        public UIEventType UIEventType;
+    }
 
-public enum UIEventType
-{
-    StartGame = 0,
-    ShowOptionView = 1,
-    QuitGame = 2,
-    PauseGame = 3,
-    ResumeGame = 4,
-    RestartGame = 5,
-    ReturnToMenu = 6,
+    public enum UIEventType
+    {
+        StartGame = 0,
+        ShowOptionView = 1,
+        QuitGame = 2,
+        PauseGame = 3,
+        ResumeGame = 4,
+        RestartGame = 5,
+        ReturnToMenu = 6,
+    }
 }

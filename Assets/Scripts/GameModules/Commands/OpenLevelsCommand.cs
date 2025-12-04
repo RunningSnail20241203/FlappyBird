@@ -1,4 +1,9 @@
-public class OpenLevelsCommand : ICommand
+using Infra.Command;
+
+namespace GameModules.Commands
 {
-    public string Name => nameof(OpenLevelsCommand);
+    public class OpenLevelsCommand : ICommand
+    {
+        public string Name => nameof(OpenLevelsCommand);
+    }
 }

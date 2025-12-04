@@ -1,6 +1,11 @@
-public class CurrencyManager : MonoSingleton<CurrencyManager>
+using Infra;
+
+namespace GameModules
 {
-    public void AddCoins(int coin)
+    public class CurrencyManager : MonoSingleton<CurrencyManager>
     {
+        public void AddCoins(int coin)
+        {
+        }
     }
 }

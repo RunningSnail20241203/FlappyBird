@@ -1,7 +1,12 @@
-public class PauseViewModel : ViewModelBase
+using GameModules.Commands;
+
+namespace GameModules.UI.ViewModels
 {
-    public void StartGame()
+    public class PauseViewModel : ViewModelBase
     {
-        GameStateManager.Instance.AddCommand(new PauseGameCommand());
+        public void StartGame()
+        {
+            GameStateManager.Instance.AddCommand(new PauseGameCommand());
+        }
     }
 }

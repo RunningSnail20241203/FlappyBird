@@ -1,3 +1,5 @@
+using Infra.Command;
+
 namespace GameModules.Commands
 {
     public class ResumeGameCommand :  ICommand

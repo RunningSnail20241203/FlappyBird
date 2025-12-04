@@ -1,6 +1,12 @@
-public class StartGameCommand : ICommand
+using Infra.Command;
+using Infra.GameMode;
+
+namespace GameModules.Commands
 {
-    public string Name => nameof(StartGameCommand);
-    public GameModeType GameMode { get; set; }
-    public IGameModeArg Args { get; set; }
+    public class StartGameCommand : ICommand
+    {
+        public string Name => nameof(StartGameCommand);
+        public GameModeType GameMode { get; set; }
+        public IGameModeArg Args { get; set; }
+    }
 }

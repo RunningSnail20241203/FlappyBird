@@ -1,4 +1,9 @@
-public struct LevelGameData : IGameModeArg
+using Infra.GameMode;
+
+namespace GameModules.GameMode.GameModeData
 {
-    public int LevelId { get; set; }
+    public struct LevelGameData : IGameModeArg
+    {
+        public int LevelId { get; set; }
+    }
 }

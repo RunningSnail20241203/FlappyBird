@@ -1,4 +1,7 @@
-public class LeaderboardData
+namespace GameModules.Rank
 {
+    public class LeaderboardData
+    {
         
+    }
 }

@@ -1,50 +1,55 @@
-public class SettingViewModel : ViewModelBase
+using GameModules.Commands;
+
+namespace GameModules.UI.ViewModels
 {
-    public Observable<bool> IsMusicEnabled => GetObservable<bool>() as Observable<bool>;
-    public Observable<bool> IsSoundEnabled => GetObservable<bool>() as Observable<bool>;
-
-
-    public void ReturnMenu()
+    public class SettingViewModel : ViewModelBase
     {
-        GameStateManager.Instance.AddCommand(new OpenMainMenuCommand());
-    }
+        public Observable<bool> IsMusicEnabled => GetObservable<bool>() as Observable<bool>;
+        public Observable<bool> IsSoundEnabled => GetObservable<bool>() as Observable<bool>;
 
-    public void ToggleMusic(bool arg0)
-    {
-        SettingManager.Instance.SetMusicEnabled(arg0);
-    }
 
-    public void ToggleSound(bool arg0)
-    {
-        SettingManager.Instance.SetSoundEnabled(arg0);
-    }
+        public void ReturnMenu()
+        {
+            GameStateManager.Instance.AddCommand(new OpenMainMenuCommand());
+        }
 
-    protected override void InitializeProperties()
-    {
-        base.InitializeProperties();
+        public void ToggleMusic(bool arg0)
+        {
+            SettingManager.Instance.SetMusicEnabled(arg0);
+        }
 
-        OnMusicToggleChanged(SettingManager.Instance.IsMusicEnabled);
-        OnSoundToggleChanged(SettingManager.Instance.IsSoundEnabled);
+        public void ToggleSound(bool arg0)
+        {
+            SettingManager.Instance.SetSoundEnabled(arg0);
+        }
+
+        protected override void InitializeProperties()
+        {
+            base.InitializeProperties();
+
+            OnMusicToggleChanged(SettingManager.Instance.IsMusicEnabled);
+            OnSoundToggleChanged(SettingManager.Instance.IsSoundEnabled);
         
-        SettingManager.Instance.OnMusicToggleChanged += OnMusicToggleChanged;
-        SettingManager.Instance.OnSoundToggleChanged += OnSoundToggleChanged;
-    }
+            SettingManager.Instance.OnMusicToggleChanged += OnMusicToggleChanged;
+            SettingManager.Instance.OnSoundToggleChanged += OnSoundToggleChanged;
+        }
 
-    protected override void OnDispose()
-    {
-        base.OnDispose();
+        protected override void OnDispose()
+        {
+            base.OnDispose();
 
-        SettingManager.Instance.OnMusicToggleChanged -= OnMusicToggleChanged;
-        SettingManager.Instance.OnSoundToggleChanged -= OnSoundToggleChanged;
-    }
+            SettingManager.Instance.OnMusicToggleChanged -= OnMusicToggleChanged;
+            SettingManager.Instance.OnSoundToggleChanged -= OnSoundToggleChanged;
+        }
 
-    private void OnMusicToggleChanged(bool obj)
-    {
-        IsMusicEnabled.SetValue(obj);
-    }
+        private void OnMusicToggleChanged(bool obj)
+        {
+            IsMusicEnabled.SetValue(obj);
+        }
 
-    private void OnSoundToggleChanged(bool obj)
-    {
-        IsSoundEnabled.SetValue(obj);
+        private void OnSoundToggleChanged(bool obj)
+        {
+            IsSoundEnabled.SetValue(obj);
+        }
     }
 }

@@ -1,10 +1,14 @@
 using System.Threading.Tasks;
+using Infra;
 
-public class NetworkManager : MonoSingleton<NetworkManager>
+namespace GameModules
 {
-    public bool IsConnected { get; private set; }
-    public async Task JoinRoom(string matchId)
+    public class NetworkManager : MonoSingleton<NetworkManager>
     {
+        public bool IsConnected { get; private set; }
+        public async Task JoinRoom(string matchId)
+        {
         
+        }
     }
 }

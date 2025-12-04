@@ -1,4 +1,7 @@
-public interface ICommand
+namespace Infra.Command
 {
-    string Name { get; }
+    public interface ICommand
+    {
+        string Name { get; }
+    }
 }

@@ -1,7 +1,10 @@
-public enum GameModeType
+namespace Infra.GameMode
 {
-    Infinite,
-    Level,
-    Challenge,
-    Online,
+    public enum GameModeType
+    {
+        Infinite,
+        Level,
+        Challenge,
+        Online,
+    }
 }

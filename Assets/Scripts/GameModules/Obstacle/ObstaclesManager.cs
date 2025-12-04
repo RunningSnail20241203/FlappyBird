@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using GameModules.ObjectPool;
+using Infra;
 using UnityEngine;
 
-namespace GameModules.Pipe
+namespace GameModules.Obstacle
 {
     public class ObstaclesManager : MonoSingleton<ObstaclesManager>, IObstacleSpawner
     {

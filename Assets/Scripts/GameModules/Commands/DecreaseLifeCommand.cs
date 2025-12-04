@@ -1,6 +1,11 @@
-public class DecreaseLifeCommand : ICommand
+using Infra.Command;
+
+namespace GameModules.Commands
 {
-    public string Name => nameof(DecreaseLifeCommand);
-    public int DecreaseCount { get; set; }
-    public string BirdId { get; set; }
+    public class DecreaseLifeCommand : ICommand
+    {
+        public string Name => nameof(DecreaseLifeCommand);
+        public int DecreaseCount { get; set; }
+        public string BirdId { get; set; }
+    }
 }

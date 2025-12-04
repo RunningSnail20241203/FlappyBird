@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameModules.Pipe
+namespace GameModules.Obstacle
 {
     public interface IObstacleSpawner
     {

@@ -1,4 +1,9 @@
-public class StartMatchCommand : ICommand
+using Infra.Command;
+
+namespace GameModules.Commands
 {
-    public string Name => nameof(StartMatchCommand);
+    public class StartMatchCommand : ICommand
+    {
+        public string Name => nameof(StartMatchCommand);
+    }
 }

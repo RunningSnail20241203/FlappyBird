@@ -1,35 +1,41 @@
-public class MainMenuViewModel : ViewModelBase
+using GameModules.Commands;
+using Infra.GameMode;
+
+namespace GameModules.UI.ViewModels
 {
-    public void OpenSetting()
+    public class MainMenuViewModel : ViewModelBase
     {
-        GameStateManager.Instance.AddCommand(new OpenSettingCommand());
-    }
-
-    public void OpenThanks()
-    {
-        GameStateManager.Instance.AddCommand(new OpenThanksCommand());
-    }
-
-    public void StartInfiniteGame()
-    {
-        GameStateManager.Instance.AddCommand(new StartGameCommand
+        public void OpenSetting()
         {
-            GameMode = GameModeType.Infinite,
-        });
-    }
+            GameStateManager.Instance.AddCommand(new OpenSettingCommand());
+        }
 
-    public void OpenLevels()
-    {
-        GameStateManager.Instance.AddCommand(new OpenLevelsCommand());
-    }
+        public void OpenThanks()
+        {
+            GameStateManager.Instance.AddCommand(new OpenThanksCommand());
+        }
 
-    public void OpenLeaderBoard()
-    {
-        GameStateManager.Instance.AddCommand(new OpenLeaderBoardCommand());
-    }
+        public void StartInfiniteGame()
+        {
+            GameStateManager.Instance.AddCommand(new StartGameCommand
+            {
+                GameMode = GameModeType.Infinite,
+            });
+        }
 
-    public void StartMatch()
-    {
-        GameStateManager.Instance.AddCommand(new StartMatchCommand());
+        public void OpenLevels()
+        {
+            GameStateManager.Instance.AddCommand(new OpenLevelsCommand());
+        }
+
+        public void OpenLeaderBoard()
+        {
+            GameStateManager.Instance.AddCommand(new OpenLeaderBoardCommand());
+        }
+
+        public void StartMatch()
+        {
+            GameStateManager.Instance.AddCommand(new StartMatchCommand());
+        }
     }
 }

@@ -1,7 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GlobalConfig", menuName = "Configs/GlobalConfig")]
-public class GlobalConfig : ScriptableObject
+namespace GameModules.Config
 {
-    public GameObject obstaclePrefab;
+    [CreateAssetMenu(fileName = "GlobalConfig", menuName = "Configs/GlobalConfig")]
+    public class GlobalConfig : ScriptableObject
+    {
+        public GameObject obstaclePrefab;
+    }
 }

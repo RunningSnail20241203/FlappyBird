@@ -1,4 +1,9 @@
-public class OpenThanksCommand : ICommand
+using Infra.Command;
+
+namespace GameModules.Commands
 {
-    public string Name => nameof(OpenThanksCommand);
+    public class OpenThanksCommand : ICommand
+    {
+        public string Name => nameof(OpenThanksCommand);
+    }
 }

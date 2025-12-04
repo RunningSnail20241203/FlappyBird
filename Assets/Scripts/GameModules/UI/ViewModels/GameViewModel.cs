@@ -1,28 +1,34 @@
-public class GameViewModel : ViewModelBase
+using GameModules.Bird;
+using GameModules.Commands;
+
+namespace GameModules.UI.ViewModels
 {
-    public Observable<int> Score => GetObservable<int>() as Observable<int>;
-
-    public void PauseGame()
+    public class GameViewModel : ViewModelBase
     {
-        GameStateManager.Instance.AddCommand(new PauseGameCommand());
-    }
+        public Observable<int> Score => GetObservable<int>() as Observable<int>;
 
-    protected override void InitializeProperties()
-    {
-        base.InitializeProperties();
-        OnScoreChanged(string.Empty, ScoreManager.Instance.QueryScore(BirdManager.Instance.MyBird.name));
+        public void PauseGame()
+        {
+            GameStateManager.Instance.AddCommand(new PauseGameCommand());
+        }
 
-        ScoreManager.Instance.OnScoreChanged += OnScoreChanged;
-    }
+        protected override void InitializeProperties()
+        {
+            base.InitializeProperties();
+            OnScoreChanged(string.Empty, ScoreManager.Instance.QueryScore(BirdManager.Instance.MyBird.name));
 
-    protected override void OnDispose()
-    {
-        base.OnDispose();
-        ScoreManager.Instance.OnScoreChanged -= OnScoreChanged;
-    }
+            ScoreManager.Instance.OnScoreChanged += OnScoreChanged;
+        }
 
-    private void OnScoreChanged(string key, int score)
-    {
-        Score.SetValue(score);
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            ScoreManager.Instance.OnScoreChanged -= OnScoreChanged;
+        }
+
+        private void OnScoreChanged(string key, int score)
+        {
+            Score.SetValue(score);
+        }
     }
 }

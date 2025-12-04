@@ -1,4 +1,9 @@
-public class PauseGameCommand : ICommand
+using Infra.Command;
+
+namespace GameModules.Commands
 {
-    public string Name => nameof(PauseGameCommand);
+    public class PauseGameCommand : ICommand
+    {
+        public string Name => nameof(PauseGameCommand);
+    }
 }

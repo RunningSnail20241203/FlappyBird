@@ -1,55 +1,65 @@
-/// <summary>
-/// 模式策略基类
-/// </summary>
-public abstract class GameModeBase : IGameMode
+using System.Collections;
+using GameModules.Obstacle;
+using GameModules.Obstacle.GenerateStrategy;
+using Infra.Command;
+
+namespace Infra.GameMode
 {
-    public abstract GameModeType ModeType { get; }
-
-    public virtual void Initialize()
+    /// <summary>
+    /// 模式策略基类
+    /// </summary>
+    public abstract class GameModeBase : IGameMode
     {
-    }
+        public abstract GameModeType ModeType { get; }
 
-    public virtual void Start()
-    {
-    }
+        protected IObstacleGenerationStrategy GenerationStrategy;
 
-    public virtual void Pause()
-    {
-    }
+        protected const string CollisionTag = "Obstacle";
+        protected const string ScoreTriggerTag = "ScoreTrigger";
 
-    public virtual void Resume()
-    {
-    }
+        public virtual void Initialize()
+        {
+        }
 
-    public virtual void Restart()
-    {
-        
-    }
+        public virtual void Start()
+        {
+        }
 
-    public virtual void End()
-    {
-        
-    }
+        public virtual void Pause()
+        {
+        }
 
-    public virtual void Cleanup()
-    {
-    }
+        public virtual void Resume()
+        {
+        }
 
-    public virtual void OnUpdate(float deltaTime)
-    {
-    }
+        public virtual void Restart()
+        {
+        }
 
-    public virtual void OnFixedUpdate(float fixedDeltaTime)
-    {
-        
-    }
+        public virtual void End()
+        {
+        }
 
-    public virtual void SetGameModeData(IGameModeArg arg)
-    {
-    }
+        public virtual void Cleanup()
+        {
+        }
 
-    public virtual void ProcessCommand(ICommand command)
-    {
-        
+        public virtual void OnUpdate(float deltaTime)
+        {
+        }
+
+        public virtual void OnFixedUpdate(float fixedDeltaTime)
+        {
+        }
+
+        public virtual IEnumerator SetGameModeData(IGameModeArg arg)
+        {
+            yield break;
+        }
+
+        public virtual void ProcessCommand(ICommand command)
+        {
+        }
     }
 }

@@ -1,40 +1,45 @@
 using System.Collections;
-using GameModules.Pipe;
+using GameModules.Config;
+using GameModules.Obstacle;
+using Infra;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-public class ConfigManager : MonoSingleton<ConfigManager>
+namespace GameModules
 {
-    public GlobalConfig GlobalConfig { get; private set; }
-    public RandomGenerationConfig RandomGenerationConfig { get; private set; }
-
-    private const string GlobalConfigPath = "Assets/Configs/GlobalConfig.asset";
-
-    public bool IsValid()
+    public class ConfigManager : MonoSingleton<ConfigManager>
     {
-        return RandomGenerationConfig != null && GlobalConfig != null;;
-    }
+        public GlobalConfig GlobalConfig { get; private set; }
+        public RandomGenerationConfig RandomGenerationConfig { get; private set; }
 
-    protected override void OnInitialize()
-    {
-        base.OnInitialize();
+        private const string GlobalConfigPath = "Assets/Configs/GlobalConfig.asset";
 
-        RandomGenerationConfig = new RandomGenerationConfig()
+        public bool IsValid()
         {
-            GenerateInterval = 2f,
-            YRange1 = new Vector2(-150f, 150f),
-            YRange2 = new Vector2(350f, 600f),
-            XSpawn = 1100f,
-            MoveSpeed = new Vector2(-200f, 0f),
-        };
+            return RandomGenerationConfig != null && GlobalConfig != null;;
+        }
 
-        StartCoroutine(LoadConfig());
-    }
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
 
-    IEnumerator LoadConfig()
-    {
-        var handle = Addressables.LoadAssetAsync<GlobalConfig>(GlobalConfigPath);
-        yield return handle;
-        GlobalConfig = handle.Result;
+            RandomGenerationConfig = new RandomGenerationConfig()
+            {
+                GenerateInterval = 2f,
+                YRange1 = new Vector2(-150f, 150f),
+                YRange2 = new Vector2(350f, 600f),
+                XSpawn = 1100f,
+                MoveSpeed = new Vector2(-200f, 0f),
+            };
+
+            StartCoroutine(LoadConfig());
+        }
+
+        IEnumerator LoadConfig()
+        {
+            var handle = Addressables.LoadAssetAsync<GlobalConfig>(GlobalConfigPath);
+            yield return handle;
+            GlobalConfig = handle.Result;
+        }
     }
 }

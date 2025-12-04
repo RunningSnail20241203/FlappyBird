@@ -1,4 +1,7 @@
-public interface IGameModeArg
+namespace Infra.GameMode
 {
+    public interface IGameModeArg
+    {
         
+    }
 }

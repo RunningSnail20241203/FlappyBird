@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class ConfigBase : ScriptableObject
+namespace GameModules.UI.ViewModels
 {
+    public class ConfigBase : ScriptableObject
+    {
         
+    }
 }

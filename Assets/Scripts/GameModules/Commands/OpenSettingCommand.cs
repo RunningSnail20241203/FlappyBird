@@ -1,4 +1,9 @@
-public class OpenSettingCommand : ICommand
+using Infra.Command;
+
+namespace GameModules.Commands
 {
-    public string Name => nameof(OpenSettingCommand);
+    public class OpenSettingCommand : ICommand
+    {
+        public string Name => nameof(OpenSettingCommand);
+    }
 }

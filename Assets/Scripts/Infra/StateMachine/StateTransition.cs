@@ -1,18 +1,22 @@
 using System;
+using GameModules.State;
 
-/// <summary>
-/// 状态过渡条件
-/// </summary>
-public struct StateTransition
+namespace Infra.StateMachine
 {
-    public IState From { get; }
-    public IState To { get; }
-    public Func<bool> Condition { get; }
-
-    public StateTransition(IState from, IState to, Func<bool> condition)
+    /// <summary>
+    /// 状态过渡条件
+    /// </summary>
+    public struct StateTransition
     {
-        From = from;
-        To = to;
-        Condition = condition;
+        public IState From { get; }
+        public IState To { get; }
+        public Func<bool> Condition { get; }
+
+        public StateTransition(IState from, IState to, Func<bool> condition)
+        {
+            From = from;
+            To = to;
+            Condition = condition;
+        }
     }
 }

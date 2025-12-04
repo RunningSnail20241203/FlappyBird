@@ -1,30 +1,35 @@
-
 using System;
 using System.Collections.Generic;
+using GameModules.Commands;
+using Infra;
+using Infra.Command;
 
-public class ThanksState : GameStateBase
+namespace GameModules.State
 {
-    protected override Dictionary<string, Action<ICommand>> CommandHandlers => new()
+    public class ThanksState : GameStateBase
     {
-        { nameof(OpenMainMenuCommand), ReturnMainMenuCommandHandler },
-    };
+        protected override Dictionary<string, Action<ICommand>> CommandHandlers => new()
+        {
+            { nameof(OpenMainMenuCommand), ReturnMainMenuCommandHandler },
+        };
 
-    public override void OnEnter()
-    {
-        base.OnEnter();
+        public override void OnEnter()
+        {
+            base.OnEnter();
         
-        UIManager.Instance.ShowThanksPanel();
-    }
+            UIManager.Instance.ShowThanksPanel();
+        }
 
-    public override void OnExit()
-    {
-        base.OnExit();
+        public override void OnExit()
+        {
+            base.OnExit();
         
-        UIManager.Instance.HideThanksPanel();
-    }
+            UIManager.Instance.HideThanksPanel();
+        }
 
-    private void ReturnMainMenuCommandHandler(ICommand args)
-    {
-        GameStateManager.Instance.GoToMenu();
+        private void ReturnMainMenuCommandHandler(ICommand args)
+        {
+            GameStateManager.Instance.GoToMenu();
+        }
     }
 }

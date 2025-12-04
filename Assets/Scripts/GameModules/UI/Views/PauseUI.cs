@@ -1,20 +1,24 @@
+using GameModules.UI.ViewModels;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PauseUI : UIBase
+namespace GameModules.UI.Views
 {
-    [SerializeField] private Button startButton;
-
-    public override void Initialize()
+    public class PauseUI : UIBase
     {
-        base.Initialize();
+        [SerializeField] private Button startButton;
 
-        startButton.onClick.AddListener(OnClickStartButton);
-    }
+        public override void Initialize()
+        {
+            base.Initialize();
 
-    private void OnClickStartButton()
-    {
-        var pauseViewModel = GetViewModel<PauseViewModel>();
-        pauseViewModel.StartGame();
+            startButton.onClick.AddListener(OnClickStartButton);
+        }
+
+        private void OnClickStartButton()
+        {
+            var pauseViewModel = GetViewModel<PauseViewModel>();
+            pauseViewModel.StartGame();
+        }
     }
 }

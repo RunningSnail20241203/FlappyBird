@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0b56b97dfe440bbc29551c32d0fb80, type: 3}
+  m_Name: LevelConfig1
+  m_EditorClassIdentifier: 
+  levelInfos:
+  - spawnTime: 0
+    posInY: 10
+    height: 0
+  - spawnTime: 2
+    posInY: 20
+    height: 300
+  - spawnTime: 4
+    posInY: 30
+    height: 300
+  - spawnTime: 6
+    posInY: 40
+    height: 300
+  - spawnTime: 8
+    posInY: 40
+    height: 300
+  - spawnTime: 10
+    posInY: 50
+    height: 300
+  - spawnTime: 12
+    posInY: 40
+    height: 300
+  - spawnTime: 14
+    posInY: 30
+    height: 300
+  - spawnTime: 16
+    posInY: 20
+    height: 300
+  - spawnTime: 18
+    posInY: 30
+    height: 300
+  - spawnTime: 20
+    posInY: 40
+    height: 300
+  - spawnTime: 22
+    posInY: 50
+    height: 300
+  - spawnTime: 24
+    posInY: 60
+    height: 300
+  - spawnTime: 26
+    posInY: 70
+    height: 300
+  - spawnTime: 28
+    posInY: 80
+    height: 300
+  - spawnTime: 30
+    posInY: 90
+    height: 300

@@ -1,35 +1,41 @@
-public class GameOverViewModel : ViewModelBase
+using GameModules.Bird;
+using GameModules.Commands;
+
+namespace GameModules.UI.ViewModels
 {
-    public Observable<int> Score => GetObservable<int>() as Observable<int>;
-
-    public void RestartGame()
+    public class GameOverViewModel : ViewModelBase
     {
-        GameStateManager.Instance.AddCommand(new StartGameCommand()
+        public Observable<int> Score => GetObservable<int>() as Observable<int>;
+
+        public void RestartGame()
         {
-            GameMode = GameModeManager.Instance.CurrentMode.ModeType,
-        });
-    }
+            GameStateManager.Instance.AddCommand(new StartGameCommand()
+            {
+                GameMode = GameModeManager.Instance.CurrentMode.ModeType,
+            });
+        }
 
-    public void ReturnMainMenu()
-    {
-        GameStateManager.Instance.AddCommand(new OpenMainMenuCommand());
-    }
+        public void ReturnMainMenu()
+        {
+            GameStateManager.Instance.AddCommand(new OpenMainMenuCommand());
+        }
 
-    protected override void InitializeProperties()
-    {
-        base.InitializeProperties();
-        OnScoreChanged(string.Empty, ScoreManager.Instance.QueryScore(BirdManager.Instance.MyBird.name));
-        ScoreManager.Instance.OnScoreChanged += OnScoreChanged;
-    }
+        protected override void InitializeProperties()
+        {
+            base.InitializeProperties();
+            OnScoreChanged(string.Empty, ScoreManager.Instance.QueryScore(BirdManager.Instance.MyBird.name));
+            ScoreManager.Instance.OnScoreChanged += OnScoreChanged;
+        }
 
-    protected override void OnDispose()
-    {
-        base.OnDispose();
-        ScoreManager.Instance.OnScoreChanged -= OnScoreChanged;
-    }
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            ScoreManager.Instance.OnScoreChanged -= OnScoreChanged;
+        }
 
-    private void OnScoreChanged(string key, int score)
-    {
-        Score.SetValue(score);
+        private void OnScoreChanged(string key, int score)
+        {
+            Score.SetValue(score);
+        }
     }
 }

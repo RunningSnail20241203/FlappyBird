@@ -1,9 +1,12 @@
 using System;
 
-public struct ConfirmDialogUIData
+namespace GameModules.UI.Views
 {
-    public string Title;
-    public string Message;
-    public Action OnConfirm;
-    public Action OnCancel;
+    public struct ConfirmDialogUIData
+    {
+        public string Title;
+        public string Message;
+        public Action OnConfirm;
+        public Action OnCancel;
+    }
 }

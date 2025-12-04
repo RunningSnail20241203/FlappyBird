@@ -1,4 +1,11 @@
-public class GameOverCommand : ICommand
+using Infra.Command;
+
+namespace GameModules.Commands
 {
-    public string Name => nameof(GameOverCommand);
+    public class GameOverCommand : ICommand
+    {
+        public string Name => nameof(GameOverCommand);
+
+        public string WinnerName;
+    }
 }

@@ -1,27 +1,33 @@
 using System;
 using System.Collections.Generic;
+using GameModules.Commands;
+using Infra;
+using Infra.Command;
 
-public class SettingState : GameStateBase
+namespace GameModules.State
 {
-    protected override Dictionary<string, Action<ICommand>> CommandHandlers => new()
+    public class SettingState : GameStateBase
     {
-        { nameof(OpenMainMenuCommand), ReturnMainMenuCommandHandler },
-    };
+        protected override Dictionary<string, Action<ICommand>> CommandHandlers => new()
+        {
+            { nameof(OpenMainMenuCommand), ReturnMainMenuCommandHandler },
+        };
 
-    public override void OnEnter()
-    {
-        base.OnEnter();
-        UIManager.Instance.ShowSettingPanel();
-    }
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            UIManager.Instance.ShowSettingPanel();
+        }
 
-    public override void OnExit()
-    {
-        base.OnExit();
-        UIManager.Instance.HideSettingPanel();
-    }
+        public override void OnExit()
+        {
+            base.OnExit();
+            UIManager.Instance.HideSettingPanel();
+        }
 
-    private void ReturnMainMenuCommandHandler(ICommand obj)
-    {
-        GameStateManager.Instance.GoToMenu();
+        private void ReturnMainMenuCommandHandler(ICommand obj)
+        {
+            GameStateManager.Instance.GoToMenu();
+        }
     }
 }

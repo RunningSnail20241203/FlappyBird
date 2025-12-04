@@ -1,4 +1,9 @@
-public class OpenMainMenuCommand : ICommand
+using Infra.Command;
+
+namespace GameModules.Commands
 {
-    public string Name => nameof(OpenMainMenuCommand);
+    public class OpenMainMenuCommand : ICommand
+    {
+        public string Name => nameof(OpenMainMenuCommand);
+    }
 }

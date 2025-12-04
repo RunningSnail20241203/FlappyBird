@@ -1,3 +1,5 @@
+using Infra;
+
 namespace GameModules
 {
     public class GlobalLogicFrame : MonoSingleton<GlobalLogicFrame>

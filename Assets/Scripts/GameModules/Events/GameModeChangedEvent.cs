@@ -1,11 +1,17 @@
-public class GameModeChangedEvent : IEvent
-{
-    public string Name => GetType().Name;
-    public IEventArg EventArgs { get; set; }
-}
+using Infra.Event;
+using Infra.GameMode;
 
-public class GameModeChangedEventArgs : IEventArg
+namespace GameModules.Events
 {
-    public GameModeType PreviousMode { get; set; }
-    public GameModeType NewMode { get; set; }
+    public class GameModeChangedEvent : IEvent
+    {
+        public string Name => GetType().Name;
+        public IEventArg EventArgs { get; set; }
+    }
+
+    public class GameModeChangedEventArgs : IEventArg
+    {
+        public GameModeType PreviousMode { get; set; }
+        public GameModeType NewMode { get; set; }
+    }
 }

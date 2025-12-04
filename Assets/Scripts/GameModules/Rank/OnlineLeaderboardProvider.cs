@@ -1,24 +1,27 @@
 using System.Threading.Tasks;
 
-public class OnlineLeaderboardProvider : ILeaderboardProvider
+namespace GameModules.Rank
 {
-    public void SubmitScore(int score)
+    public class OnlineLeaderboardProvider : ILeaderboardProvider
     {
-        throw new System.NotImplementedException();
-    }
+        public void SubmitScore(int score)
+        {
+            throw new System.NotImplementedException();
+        }
 
-    public Task<SubmitScoreResult> SubmitScoreAsync(int score)
-    {
-        throw new System.NotImplementedException();
-    }
+        public Task<SubmitScoreResult> SubmitScoreAsync(int score)
+        {
+            throw new System.NotImplementedException();
+        }
 
-    public LeaderboardData GetLeaderboard(LeaderboardType type, int count)
-    {
-        throw new System.NotImplementedException();
-    }
+        public LeaderboardData GetLeaderboard(LeaderboardType type, int count)
+        {
+            throw new System.NotImplementedException();
+        }
 
-    public Task<LeaderboardData> GetLeaderboardAsync(LeaderboardType type, int count)
-    {
-        throw new System.NotImplementedException();
+        public Task<LeaderboardData> GetLeaderboardAsync(LeaderboardType type, int count)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

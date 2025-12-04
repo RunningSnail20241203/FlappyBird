@@ -1,5 +1,8 @@
-public interface IRecycle
+namespace Infra.ObjectPool
 {
-    void OnRecycle();
-    void OnUse();
+    public interface IRecycle
+    {
+        void OnRecycle();
+        void OnUse();
+    }
 }

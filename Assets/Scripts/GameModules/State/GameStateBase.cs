@@ -1,82 +1,88 @@
 using System;
 using System.Collections.Generic;
-#if UNITY_EDITOR
+using GameModules.Commands;
+using GameModules.UI.Views;
+using Infra.Command;
 using UnityEditor;
-#endif
 using UnityEngine;
+#if UNITY_EDITOR
+#endif
 
-/// <summary>
-/// 游戏状态基类
-/// </summary>
-public abstract class GameStateBase : StateBase
+namespace GameModules.State
 {
-    private readonly List<ICommand> _commands = new();
-    protected virtual Dictionary<string, Action<ICommand>> CommandHandlers { get; } = new();
-
-    public override void OnFixedUpdate(float fixedDeltaTime)
+    /// <summary>
+    /// 游戏状态基类
+    /// </summary>
+    public abstract class GameStateBase : StateBase
     {
-        base.OnFixedUpdate(fixedDeltaTime);
-        ProcessCommands();
-    }
+        private readonly List<ICommand> _commands = new();
+        protected virtual Dictionary<string, Action<ICommand>> CommandHandlers { get; } = new();
 
-    public override void OnExit()
-    {
-        base.OnExit();
-        ClearCommands();
-    }
-
-    public void AddCommand(ICommand commandBase)
-    {
-        Debug.Log($"当前状态：{Name},添加命令: {commandBase.Name}");
-        _commands.Add(commandBase);
-    }
-
-    private void ClearCommands()
-    {
-        _commands.Clear();
-    }
-
-    private void ProcessCommands()
-    {
-        if (_commands.Count <= 0) return;
-
-        var copyCommands = new List<ICommand>(_commands);
-        _commands.Clear();
-        foreach (var command in copyCommands)
+        public override void OnFixedUpdate(float fixedDeltaTime)
         {
-            if (command is QuitGameCommand)
-            {
-                QuitGame();
-                return;
-            }
+            base.OnFixedUpdate(fixedDeltaTime);
+            ProcessCommands();
+        }
 
-            if (CommandHandlers.TryGetValue(command.Name, out var handlerFunc))
+        public override void OnExit()
+        {
+            base.OnExit();
+            ClearCommands();
+        }
+
+        public void AddCommand(ICommand commandBase)
+        {
+            Debug.Log($"当前状态：{Name},添加命令: {commandBase.Name}");
+            _commands.Add(commandBase);
+        }
+
+        private void ClearCommands()
+        {
+            _commands.Clear();
+        }
+
+        private void ProcessCommands()
+        {
+            if (_commands.Count <= 0) return;
+
+            var copyCommands = new List<ICommand>(_commands);
+            _commands.Clear();
+            foreach (var command in copyCommands)
             {
-                handlerFunc?.Invoke(command);
-            }
-            else
-            {
-                Debug.LogError($"没有找到命令处理函数: {command.Name}");
+                if (command is QuitGameCommand)
+                {
+                    QuitGame();
+                    return;
+                }
+
+                if (CommandHandlers.TryGetValue(command.Name, out var handlerFunc))
+                {
+                    handlerFunc?.Invoke(command);
+                }
+                else
+                {
+                    Debug.LogError($"没有找到命令处理函数: {command.Name}");
+                }
             }
         }
-    }
 
-    private void QuitGame()
-    {
-        var config = new ConfirmDialogUIData()
+        private void QuitGame()
         {
-            Title = "退出游戏",
-            Message = "确定要退出游戏吗？",
-            OnConfirm = () =>
+            var config = new ConfirmDialogUIData()
             {
+                Title = "退出游戏",
+                Message = "确定要退出游戏吗？",
+                OnConfirm = () =>
+                {
 #if UNITY_EDITOR
-                EditorApplication.isPlaying = false;
+                    EditorApplication.isPlaying = false;
 #else
                 Application.Quit();
 #endif
-            },
-            OnCancel = () => { }
-        };
-        ConfirmDialogManager.Instance.ShowConfirmDialog(config);
+                },
+                OnCancel = () => { }
+            };
+            ConfirmDialogManager.Instance.ShowConfirmDialog(config);
+        }
     }
 }

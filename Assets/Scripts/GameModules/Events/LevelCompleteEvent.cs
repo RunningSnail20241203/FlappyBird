@@ -1,15 +1,20 @@
-/// <summary>
-/// 关卡完成事件
-/// </summary>
-public class LevelCompletedEvent : IEvent
-{
-    public string Name { get; }
-    public IEventArg EventArgs { get; set; }
-}
+using Infra.Event;
 
-public class LevelCompletedEventArgs : IEventArg
+namespace GameModules.Events
 {
-    public int LevelId { get; set; }
-    public int Stars { get; set; }
-    public bool IsSuccess { get; set; }
+    /// <summary>
+    /// 关卡完成事件
+    /// </summary>
+    public class LevelCompletedEvent : IEvent
+    {
+        public string Name { get; }
+        public IEventArg EventArgs { get; set; }
+    }
+
+    public class LevelCompletedEventArgs : IEventArg
+    {
+        public int LevelId { get; set; }
+        public int Stars { get; set; }
+        public bool IsSuccess { get; set; }
+    }
 }

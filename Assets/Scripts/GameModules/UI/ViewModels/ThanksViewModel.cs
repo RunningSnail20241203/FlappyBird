@@ -1,7 +1,12 @@
-public class ThanksViewModel : ViewModelBase
+using GameModules.Commands;
+
+namespace GameModules.UI.ViewModels
 {
-    public void ReturnMenu()
+    public class ThanksViewModel : ViewModelBase
     {
-        GameStateManager.Instance.AddCommand(new OpenMainMenuCommand());
+        public void ReturnMenu()
+        {
+            GameStateManager.Instance.AddCommand(new OpenMainMenuCommand());
+        }
     }
 }

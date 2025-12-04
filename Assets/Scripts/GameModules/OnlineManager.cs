@@ -1,7 +1,12 @@
-public class OnlineManager : MonoSingleton<OnlineManager>
+using Infra;
+
+namespace GameModules
 {
-    public void UploadScore(int score)
+    public class OnlineManager : MonoSingleton<OnlineManager>
     {
+        public void UploadScore(int score)
+        {
         
+        }
     }
 }

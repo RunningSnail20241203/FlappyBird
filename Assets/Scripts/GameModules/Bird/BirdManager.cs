@@ -1,69 +1,89 @@
 using System.Collections.Generic;
+using Infra;
 using UnityEngine;
 
-public class BirdManager : MonoSingleton<BirdManager>
+namespace GameModules.Bird
 {
-    public List<BirdController> Birds { get; } = new();
-
-    private const string BirdControllerTag = "BirdController";
-
-    public BirdController MyBird => Birds[0]; // 临时用第一个小鸟作为自己的小鸟，后续要重构
-
-    public void StartBirds()
+    public class BirdManager : MonoSingleton<BirdManager>
     {
-        foreach (var bird in Birds)
-        {
-            bird.StartBird();
-        }
-    }
+        public List<BirdController> Birds { get; } = new();
 
-    public void ResetBirds()
-    {
-        foreach (var bird in Birds)
-        {
-            bird.ResetBird();
-        }
-    }
+        private const string BirdControllerTag = "BirdController";
 
-    public void PauseBirds()
-    {
-        foreach (var bird in Birds)
-        {
-            bird.PauseBird();
-        }
-    }
+        public BirdController MyBird => Birds[0]; // 临时用第一个小鸟作为自己的小鸟，后续要重构
 
-    public void ResumeBirds()
-    {
-        foreach (var bird in Birds)
+        public void StartBirds()
         {
-            bird.ResumeBird();
-        }
-    }
-
-    protected override void OnInitialize()
-    {
-        base.OnInitialize();
-
-        // 后续要重构，现在是直接获取所有的小鸟，应该由服务器下发小鸟的位置，然后动态创建小鸟，并设置位置
-        var objs = GameObject.FindGameObjectsWithTag(BirdControllerTag);
-        foreach (var obj in objs)
-        {
-            var controller = obj.GetComponent<BirdController>();
-            if (controller != null)
+            foreach (var bird in Birds)
             {
-                Birds.Add(controller);
+                bird.StartBird();
             }
         }
-    }
 
-    public void ChangeLife(string birdId, int changeCount)
-    {
-        foreach (var bird in Birds)
+        public void ResetBirds()
         {
-            if (bird.name == birdId)
+            foreach (var bird in Birds)
             {
-                bird.ChangeLife(changeCount);
+                bird.ResetBird();
+            }
+        }
+
+        public void PauseBirds()
+        {
+            foreach (var bird in Birds)
+            {
+                bird.PauseBird();
+            }
+        }
+
+        public void ResumeBirds()
+        {
+            foreach (var bird in Birds)
+            {
+                bird.ResumeBird();
+            }
+        }
+
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+
+            // 后续要重构，现在是直接获取所有的小鸟，应该由服务器下发小鸟的位置，然后动态创建小鸟，并设置位置
+            var objs = GameObject.FindGameObjectsWithTag(BirdControllerTag);
+            foreach (var obj in objs)
+            {
+                var controller = obj.GetComponent<BirdController>();
+                if (controller != null)
+                {
+                    Birds.Add(controller);
+                }
+            }
+        }
+
+        public void ChangeLife(string birdId, int changeCount)
+        {
+            foreach (var bird in Birds)
+            {
+                if (bird.name == birdId)
+                {
+                    bird.ChangeLife(changeCount);
+                }
+            }
+        }
+
+        public void HideAllBirds()
+        {
+            foreach (var bird in Birds)
+            {
+                bird.SetActive(false);
+            }
+        }
+
+        public void ShowAllBirds()
+        {
+            foreach (var bird in Birds)
+            {
+                bird.SetActive(true);
             }
         }
     }

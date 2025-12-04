@@ -1,10 +1,15 @@
-public class BirdCollisionEvent : IEvent
-{
-    public string Name => GetType().Name;
-    public IEventArg EventArgs { get; set; }
-}
+using Infra.Event;
 
-public class BirdCollisionEventArg : IEventArg
+namespace GameModules.Events
 {
-    public string ColliderTag { get; set; }
+    public class BirdCollisionEvent : IEvent
+    {
+        public string Name => GetType().Name;
+        public IEventArg EventArgs { get; set; }
+    }
+
+    public class BirdCollisionEventArg : IEventArg
+    {
+        public string ColliderTag { get; set; }
+    }
 }

@@ -1,42 +1,46 @@
+using GameModules.UI.ViewModels;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameUI : UIBase
+namespace GameModules.UI.Views
 {
-    [SerializeField] private Button pauseButton;
-    [SerializeField] private TextMeshProUGUI scoreText;
-
-    public override void Initialize()
+    public class GameUI : UIBase
     {
-        base.Initialize();
-        pauseButton.onClick.AddListener(OnPauseButtonClicked);
-    }
+        [SerializeField] private Button pauseButton;
+        [SerializeField] private TextMeshProUGUI scoreText;
 
-    private void UpdateScore(int obj)
-    {
-        scoreText.text = obj.ToString();
-    }
+        public override void Initialize()
+        {
+            base.Initialize();
+            pauseButton.onClick.AddListener(OnPauseButtonClicked);
+        }
 
-    protected override void OnShow()
-    {
-        base.OnShow();
-        var gameViewModel = GetViewModel<GameViewModel>();
-        UpdateScore(gameViewModel.Score.Value);
+        private void UpdateScore(int obj)
+        {
+            scoreText.text = obj.ToString();
+        }
+
+        protected override void OnShow()
+        {
+            base.OnShow();
+            var gameViewModel = GetViewModel<GameViewModel>();
+            UpdateScore(gameViewModel.Score.Value);
         
-        gameViewModel.Score.OnValueChanged += UpdateScore;
-    }
+            gameViewModel.Score.OnValueChanged += UpdateScore;
+        }
 
-    protected override void OnHide()
-    {
-        var gameViewModel = GetViewModel<GameViewModel>();
-        gameViewModel.Score.OnValueChanged -= UpdateScore;
-        base.OnHide();
-    }
+        protected override void OnHide()
+        {
+            var gameViewModel = GetViewModel<GameViewModel>();
+            gameViewModel.Score.OnValueChanged -= UpdateScore;
+            base.OnHide();
+        }
 
-    private void OnPauseButtonClicked()
-    {
-        var gameViewModel = GetViewModel<GameViewModel>();
-        gameViewModel.PauseGame();
+        private void OnPauseButtonClicked()
+        {
+            var gameViewModel = GetViewModel<GameViewModel>();
+            gameViewModel.PauseGame();
+        }
     }
 }

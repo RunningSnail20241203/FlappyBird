@@ -1,6 +1,11 @@
-public struct ChallengeGameData : IGameModeArg
+using Infra.GameMode;
+
+namespace GameModules.GameMode.GameModeData
 {
-    public int ChallengeId;
-    public int TargetScore;
-    public int Seed;
+    public struct ChallengeGameData : IGameModeArg
+    {
+        public int ChallengeId;
+        public int TargetScore;
+        public int Seed;
+    }
 }

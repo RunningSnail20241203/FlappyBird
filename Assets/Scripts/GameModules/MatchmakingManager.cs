@@ -1,27 +1,31 @@
 using System.Threading.Tasks;
+using Infra;
 
-public class MatchmakingManager : MonoSingleton<MatchmakingManager>
+namespace GameModules
 {
-    public async Task<MatchmakingResult> FindMatch()
+    public class MatchmakingManager : MonoSingleton<MatchmakingManager>
     {
-        await Task.Delay(1000);
-        return new MatchmakingResult();
+        public async Task<MatchmakingResult> FindMatch()
+        {
+            await Task.Delay(1000);
+            return new MatchmakingResult();
+        }
     }
-}
 
-public class MatchmakingResult
-{
-    public bool Success{ get; private set;}
-    public string MatchId{ get; private set;}
-
-    private static readonly MatchmakingResult FailResult = new MatchmakingResult(){Success = false}; 
-    public static MatchmakingResult Failed()
+    public class MatchmakingResult
     {
-        return FailResult;
-    }
-}
+        public bool Success{ get; private set;}
+        public string MatchId{ get; private set;}
 
-public class MatchResult
-{
+        private static readonly MatchmakingResult FailResult = new MatchmakingResult(){Success = false}; 
+        public static MatchmakingResult Failed()
+        {
+            return FailResult;
+        }
+    }
+
+    public class MatchResult
+    {
     
+    }
 }

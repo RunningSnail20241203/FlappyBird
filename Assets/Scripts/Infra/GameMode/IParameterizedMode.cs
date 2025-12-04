@@ -1,7 +1,10 @@
-/// <summary>
-/// 支持参数传递的模式接口
-/// </summary>
-public interface IParameterizedMode
+namespace Infra.GameMode
 {
-    void SetParameter(object parameter);
+    /// <summary>
+    /// 支持参数传递的模式接口
+    /// </summary>
+    public interface IParameterizedMode
+    {
+        void SetParameter(object parameter);
+    }
 }

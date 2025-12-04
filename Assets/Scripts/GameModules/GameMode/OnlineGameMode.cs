@@ -1,4 +1,9 @@
-public class OnlineGameMode : GameModeBase
+using Infra.GameMode;
+
+namespace GameModules.GameMode
 {
-    public override GameModeType ModeType => GameModeType.Online;
+    public class OnlineGameMode : GameModeBase
+    {
+        public override GameModeType ModeType => GameModeType.Online;
+    }
 }

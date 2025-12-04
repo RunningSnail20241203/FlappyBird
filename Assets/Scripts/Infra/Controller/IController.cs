@@ -1,4 +1,7 @@
-public interface IController
+namespace Infra.Controller
 {
+    public interface IController
+    {
     
+    }
 }
